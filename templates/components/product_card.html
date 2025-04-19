@@ -1,0 +1,28 @@
+<div class="product-card">
+    <div class="product-badge">Featured</div>
+    <div class="product-image">
+        <img src="{{ url_for('static', filename='uploads/' + product.image) }}" alt="{{ product.name }}">
+        <div class="product-actions">
+            <button onclick="addToWishlist({{ product.id }})" class="action-btn">
+                <i class="fas fa-heart"></i>
+            </button>
+            <button onclick="addToCart({{ product.id }})" class="action-btn">
+                <i class="fas fa-shopping-cart"></i>
+            </button>
+            <button onclick="quickView({{ product.id }})" class="action-btn">
+                <i class="fas fa-eye"></i>
+            </button>
+        </div>
+    </div>
+    <div class="product-info">
+        <h3 class="product-name">{{ product.name }}</h3>
+        <p class="product-category">{{ product.category }}</p>
+        <div class="product-details">
+            <span class="product-price">₱{{ "{:,.2f}".format(product.price) }}</span>
+            <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <span>4.5 (24)</span>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Orders details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Web site created using create-react-app" />
+    <img
+      alt="Logo"
+      src="https://appproject.dhiwise.com/dhiwise-logo.png?c=&v="
+      style="width: 0px; height: 0px; display: none"
+    />
+
+    <link rel="stylesheet" type="text/css" href="static/css/OrdersDetails.css" />
+  </head>
+  <body>
+    <div class="orders-details">
+      <div class="rowdashboaard">
+        <aside class="sidebar">
+          <img src="/static/public/images/img_image_15.png" alt="Imagefifteen" class="imagefifteen" />
+          <ul class="columndashboaar">
+            <li>
+              <a href="{{ url_for('seller_dash') }}">
+                <img src="/static/public/images/img_dashboaard.svg" alt="Dashboaard" class="dashboaard_one" />
+                <span> Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('Allproducts') }}">
+                <img src="/static/public/images/img_albums.svg" alt="Albums" class="dashboaard_one" />
+                <span> All products</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('add_new_product') }}" class="add-products">
+                  <img src="/static/public/images/img_plus.svg" alt="Add Product" class="dashboaard_one" />
+                  <span>Add Products</span>
+              </a>
+          </li>
+            <li>
+              <a href="{{ url_for('orders_list') }}">
+                <img src="/static/public/images/img_document_text.svg" alt="Image" class="dashboaard_one" />
+                <span> Order list</span>
+              </a>
+            </li>
+          </ul>
+        </aside>
+        <div class="newscreenbody">
+          <header class="header">
+            <div class="rowsearch_one">
+              <a href="#">
+                <img src="/static/public/images/img_search.svg" alt="Search" class="search_one" />
+              </a>
+              <a href="#">
+                <img src="/static/public/images/img_notifications.svg" alt="Notifications" class="notifications" />
+              </a>
+              <div class="profile-dropdown">
+                <button class="dropdown-btn">Profile</button>
+                <div class="dropdown-content">
+                    <a href="/profile">Profile</a>
+                    <a href="/my-purchase">My Purchase</a>
+                    <a href="/logout">Logout</a>
+                </div>
+            </div>
+            </div>
+          </header>
+          <div class="column_one">
+            <div class="column">
+              <div class="columnordersdet">
+                <h1 class="ordersdetails ui heading size-headinglg">Orders Details</h1>
+                <nav aria-label="Breadcrumb" class="rowhome">
+                  <ol class="rowhome-1">
+                    
+                  </ol>
+                </nav>
+              </div>
+              <div class="columnsettings">
+                <div class="columnordersid6">
+                  
+                  <div class="row">
+                    
+                    <div class="rowarrowdown">
+                      <div class="profile-dropdown">
+                        <button class="dropdown-btn">Details</button>
+                        <div class="dropdown-content">
+                            <a href="/OrdersDetails">Order Details</a>
+                            
+                        </div>
+                    </div>
+                      <button class="fluentprintsixt">
+                        <img src="/static/public/images/img_fluent_print_16_regular.svg" />
+                      </button>
+                      <button class="flex-row-center-center save">Save</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="orders_details">
+                  <div class="columnsettings-1">
+                    <div class="rowsettings_one">
+                      <button class="settings_one">
+                        <img src="/static/public/images/img_settings.svg" />
+                      </button>
+                      <div class="columncustomer">
+                        <h5 class="products ui heading size-headings">Customer</h5>
+                        
+                      </div>
+                    </div>
+                    <button class="flex-row-center-center view_profile">View profile</button>
+                  </div>
+                  <div class="columnsettings-1">
+                    <div class="rowsettings_one">
+                      <button class="settings_one">
+                        <img src="/static/public/images/img_bag_handle.svg" />
+                      </button>
+                      <div class="columncustomer">
+                        <h5 class="products ui heading size-headings">Order Info</h5>
+                        
+                      </div>
+                    </div>
+                    <button class="flex-row-center-center view_profile">Download info</button>
+                  </div>
+                  <div class="columnsettings-1">
+                    <div class="rowsettings_one">
+                      <button class="settings_one">
+                        <img src="/static/public/images/img_bag_handle.svg" />
+                      </button>
+                      <div class="columncustomer">
+                        <h5 class="products ui heading size-headings">Deliver to</h5>
+                        
+                      </div>
+                    </div>
+                    <button class="flex-row-center-center view_profile">View profile</button>
+                  </div>
+                </div>
+                <div class="orders_details">
+                  <div class="columnpaymentin">
+                    <h5 class="ordersid6743 ui heading size-headingmd">Payment Info</h5>
+                    <h6 class="ewallet ui heading size-headings">E-wallet</h6>
+                  </div>
+                  <div class="columnnote">
+                    <h5 class="ordersid6743 ui heading size-headingmd">Note</h5>
+                    <textarea name="type_some_notes" placeholder="Type some notes" class="type_some_notes"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="product">
+                <div class="rowproducts">
+                  <h5 class="products ui heading size-headingmd">Products</h5>
+                  <img
+                    src="/static/public/images/img_ph_dots_three_vertical_bold.svg"
+                    alt="Phdotsthree"
+                    class="notifications"
+                  />
+                </div>
+                <div class="lineone_one"></div>
+                <table cellpadding="0" cellspacing="0" class="ui table size-xs">
+                  <thead class="row_one">
+                    <tr>
+                      <th width="312px">
+                        <div class="rowproductname">
+                          <h5 class="productname ui heading size-headingmd">Product Name</h5>
+                        </div>
+                      </th>
+                      <th width="220px">
+                        <div class="roworderid">
+                          <h6 class="orderid ui heading size-headings">Order ID</h6>
+                        </div>
+                      </th>
+                      <th width="146px">
+                        <div class="rowquantity">
+                          <h6 class="orderid ui heading size-headings">Quantity</h6>
+                        </div>
+                      </th>
+                      <th width="72px">
+                        <div class="rowtotal">
+                          <h6 class="total-2 ui heading size-headings">Total</h6>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                   
+                    
+                  </tbody>
+                </table>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

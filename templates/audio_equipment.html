@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Equipment - Xendora</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cameralenses.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lighting_studio.css') }}">
+</head>
+<body>
+    <div class="category-header">
+        <h1>Audio Equipment</h1>
+        <p>Professional audio gear for content creators</p>
+    </div>
+
+    <div class="filter-section">
+        <div class="filter-container">
+            <div class="filter-group">
+                <select class="filter-select" id="sortBy">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                </select>
+                <select class="filter-select" id="brandFilter">
+                    <option value="all">All Brands</option>
+                    <option value="rode">Rode</option>
+                    <option value="shure">Shure</option>
+                    <option value="sennheiser">Sennheiser</option>
+                </select>
+            </div>
+            <div class="search-group">
+                <input type="text" id="searchInput" placeholder="Search audio equipment...">
+            </div>
+        </div>
+    </div>
+
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            {% if product.image %}
+                <img src="{{ url_for('static', filename='uploads/products/' + product.image) }}" 
+                     alt="{{ product.name }}" 
+                     class="product-image"
+                     onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/products/no-image.png') }}'; this.className+=' default-image';">
+            {% else %}
+                <img src="{{ url_for('static', filename='images/products/no-image.png') }}" 
+                     alt="{{ product.name }}" 
+                     class="product-image default-image">
+            {% endif %}
+            <div class="product-info">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <div class="rating">
+                    {% for i in range(5) %}
+                        {% if product.avg_rating is defined and i < (product.avg_rating|default(0)|float|round|int) %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                    {% if product.review_count > 0 %}
+                        <span class="review-count">({{ product.review_count }})</span>
+                    {% endif %}
+                </div>
+                <p class="product-price">₱{{ "%.2f"|format(product.price|float) }}</p>
+                <div class="product-actions">
+                    <button class="action-button add-to-cart" onclick="addToCart({{ product.id }})">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                    <button class="action-button add-to-wishlist" onclick="addToWishlist({{ product.id }})">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/cameralenses.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lighting_studio.js') }}"></script>
+</body>
+</html> 

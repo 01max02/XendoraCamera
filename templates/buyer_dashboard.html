@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Dashboard - Xendora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buyer_dashboard.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a href="/homepage" class="navbar-brand">
+                    <img src="{{ url_for('static', filename='images/xendora_logo.jpg') }}" alt="XENDORA" class="logo">
+                </a>
+                <div class="nav-actions">
+                    <a href="/homepage" class="nav-link">Home</a>
+                    <a href="/cart" class="nav-link">Cart</a>
+                    <a href="/logout" class="nav-link">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-container">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <div class="user-info">
+                <div class="profile-image">
+                    {% if user.profile_image %}
+                        <img src="{{ url_for('static', filename='uploads/' + user.profile_image) }}" alt="Profile">
+                    {% else %}
+                        <i class="fas fa-user-circle"></i>
+                    {% endif %}
+                </div>
+                <div class="welcome-text">
+                    <h1>Welcome back, {{ user.first_name }}!</h1>
+                    <p>Manage your orders and wishlist here</p>
+                </div>
+            </div>
+            <a href="/profile" class="edit-profile-btn">
+                <i class="fas fa-edit"></i> Edit Profile
+            </a>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Order History -->
+            <section class="dashboard-card orders-section">
+                <h2>Recent Orders</h2>
+                <div class="order-list">
+                    {% if orders %}
+                        {% for order in orders %}
+                            <div class="order-item">
+                                <img src="{{ url_for('static', filename='uploads/' + order.product_image) }}" alt="{{ order.product_name }}">
+                                <div class="order-details">
+                                    <h3>{{ order.product_name }}</h3>
+                                    <p class="order-date">{{ order.order_date.strftime('%B %d, %Y') }}</p>
+                                    <span class="order-status {{ order.status.lower() }}">{{ order.status }}</span>
+                                </div>
+                                <div class="order-price">₱{{ "%.2f"|format(order.total_amount|float) }}</div>
+                            </div>
+                        {% endfor %}
+                        <a href="/orders" class="view-all-btn">View All Orders</a>
+                    {% else %}
+                        <p class="no-items">No orders yet</p>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- Wishlist -->
+            <section class="dashboard-card wishlist-section">
+                <h2>Wishlist</h2>
+                <div class="wishlist-grid">
+                    {% if wishlist %}
+                        {% for item in wishlist %}
+                            <div class="wishlist-item">
+                                <img src="{{ url_for('static', filename='uploads/' + item.image) }}" alt="{{ item.name }}">
+                                <div class="item-details">
+                                    <h3>{{ item.name }}</h3>
+                                    <p class="price">₱{{ "%.2f"|format(item.price|float) }}</p>
+                                    <div class="item-actions">
+                                        <button class="add-to-cart-btn" data-product-id="{{ item.id }}">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                        <button class="remove-wishlist-btn" data-product-id="{{ item.id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <a href="/wishlist" class="view-all-btn">View All Wishlist</a>
+                    {% else %}
+                        <p class="no-items">Your wishlist is empty</p>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- Cart Summary -->
+            <section class="dashboard-card cart-section">
+                <h2>Cart Summary</h2>
+                <div class="cart-summary">
+                    {% if cart_items %}
+                        <div class="cart-items">
+                            {% for item in cart_items %}
+                                <div class="cart-item">
+                                    <img src="{{ url_for('static', filename='uploads/' + item.image) }}" alt="{{ item.name }}">
+                                    <div class="item-details">
+                                        <h3>{{ item.name }}</h3>
+                                        <p>Quantity: {{ item.quantity }}</p>
+                                        <p class="price">₱{{ "%.2f"|format(item.price|float * item.quantity) }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="cart-actions">
+                            <a href="/cart" class="view-cart-btn">View Cart</a>
+                            <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
+                        </div>
+                    {% else %}
+                        <p class="no-items">Your cart is empty</p>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- Recommendations -->
+            <section class="dashboard-card recommendations-section">
+                <h2>Recommended for You</h2>
+                <div class="recommendations-grid">
+                    {% if recommendations %}
+                        {% for product in recommendations %}
+                            <div class="product-card">
+                                <img src="{{ url_for('static', filename='uploads/' + product.image) }}" alt="{{ product.name }}">
+                                <div class="product-details">
+                                    <h3>{{ product.name }}</h3>
+                                    <p class="price">₱{{ "%.2f"|format(product.price|float) }}</p>
+                                    <button class="add-to-cart-btn" data-product-id="{{ product.id }}">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-items">No recommendations available</p>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/buyer_dashboard.js') }}"></script>
+</body>
+</html> 

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard - Xendora</title>
+    
+    <!-- Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/seller_dash.css') }}">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Enhanced Sidebar with Tooltips -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Xendora" class="logo">
+                <button class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('seller_dash') }}" class="nav-item active" data-bs-toggle="tooltip" title="Dashboard Overview">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <a href="{{ url_for('Allproducts') }}" class="nav-item" data-bs-toggle="tooltip" title="Manage Products">
+                    <i class="fas fa-box"></i>
+                    <span>Products</span>
+                </a>
+                
+                <a href="{{ url_for('OrdersList') }}" class="nav-item" data-bs-toggle="tooltip" title="Order Management">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                    {% if pending_orders > 0 %}
+                        <span class="badge">{{ pending_orders }}</span>
+                    {% endif %}
+                </a>
+                
+                <a href="#messages" class="nav-item" data-bs-toggle="tooltip" title="Customer Messages">
+                    <i class="fas fa-envelope"></i>
+                    <span>Messages</span>
+                    <span class="badge">3</span>
+                </a>
+                
+                <a href="{{ url_for('profile') }}" class="nav-item" data-bs-toggle="tooltip" title="Profile Settings">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="theme-toggle-btn" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="#" class="logout-btn" onclick="confirmLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <div class="top-nav">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search products, orders...">
+                </div>
+
+                <div class="nav-actions">
+                    <div class="notifications">
+                        <button class="notification-btn" onclick="toggleNotifications()">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">{{ notification_count }}</span>
+                        </button>
+                        <div class="notification-dropdown" id="notificationDropdown">
+                            <div class="notification-header">
+                                <div class="header-title">
+                                    <h3>Notifications</h3>
+                                    <span class="notification-subtitle">{{ notification_count }} New</span>
+                                </div>
+                                <button class="mark-read-btn" onclick="markAllAsRead()">
+                                    <i class="fas fa-check-double"></i>
+                                    Mark all as read
+                                </button>
+                            </div>
+                            <div class="notification-list">
+                                {% for notification in notifications %}
+                                <div class="notification-item {% if not notification.read %}unread{% endif %}">
+                                    <div class="notification-icon">
+                                        {% if notification.type == 'order' %}
+                                            <i class="fas fa-shopping-bag"></i>
+                                        {% elif notification.type == 'message' %}
+                                            <i class="fas fa-envelope"></i>
+                                        {% else %}
+                                            <i class="fas fa-bell"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="notification-content">
+                                        <p class="notification-text">{{ notification.message }}</p>
+                                        <span class="notification-time">{{ notification.timestamp }}</span>
+                                    </div>
+                                    {% if not notification.read %}
+                                        <div class="unread-indicator"></div>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="notification-footer">
+                                <a href="/all-notifications">View All Notifications</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="user-profile">
+                        <img src="{{ url_for('static', filename='uploads/' + seller.profile_image) if seller.profile_image else url_for('static', filename='images/default-profile.png') }}"
+                             alt="{{ seller.first_name }}"
+                             class="profile-image">
+                        <span class="user-name">{{ seller.first_name }} {{ seller.last_name }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Quick Stats -->
+                <section class="stats-overview">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon sales-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Total Sales</h3>
+                                <p class="stat-value">₱{{ "%.2f"|format(total_sales|float) }}</p>
+                                <div class="stat-details">
+                                    <span class="stat-change positive">
+                                        <i class="fas fa-arrow-up"></i> 15%
+                                    </span>
+                                    <span class="stat-period">vs last month</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Similar stat cards for Orders, Products, Rating -->
+                    </div>
+                </section>
+
+                <!-- Quick Actions -->
+                <section class="quick-actions">
+                    <div class="action-grid">
+                        <div class="action-card" onclick="openAddProductModal()">
+                            <i class="fas fa-plus-circle"></i>
+                            <h4>Add Product</h4>
+                        </div>
+                        <!-- More action cards -->
+                    </div>
+                </section>
+
+                <!-- Sales Chart -->
+                <section class="chart-section">
+                    <div class="chart-header">
+                        <h2>Sales Overview</h2>
+                        <div class="chart-controls">
+                            <button class="active">Daily</button>
+                            <button>Weekly</button>
+                            <button>Monthly</button>
+                        </div>
+                    </div>
+                    <canvas id="salesChart"></canvas>
+                </section>
+
+                <!-- Recent Orders Table -->
+                <section class="orders-section">
+                    <!-- Orders table implementation -->
+                </section>
+
+                <!-- Products Section -->
+                <section class="products-section">
+                    <!-- Products table implementation -->
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal" id="addProductModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Product</h5>
+                    <button type="button" class="close" onclick="closeModal()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="addProductForm" action="{{ url_for('seller_dash') }}" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Product Name</label>
+                            <input type="text" name="product_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Product ID</label>
+                            <input type="text" name="prod_id" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select name="category" id="category" class="form-control" required onchange="updateSubcategories()">
+                                <option value="">Select Category</option>
+                                <option value="CAMERAS & LENSES">CAMERAS & LENSES</option>
+                                <option value="AUDIO EQUIPMENT">AUDIO EQUIPMENT</option>
+                                <option value="LIGHTING & STUDIO">LIGHTING & STUDIO</option>
+                                <option value="ACCESSORIES">ACCESSORIES</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Subcategory</label>
+                            <select name="subcategory" id="subcategory" class="form-control" required>
+                                <option value="">Select Category First</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input type="number" name="regular_price" class="form-control" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Stock Quantity</label>
+                            <input type="number" name="stock_quantity" class="form-control" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea name="description" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Product Image</label>
+                            <input type="file" name="product_image" class="form-control" accept="image/*" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal.show {
+        display: block;
+    }
+
+    .modal-dialog {
+        margin: 2rem auto;
+        max-width: 500px;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+
+    .notification-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: -10px;
+        width: 380px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        z-index: 1000;
+        border: 1px solid rgba(0,0,0,0.05);
+        animation: slideDown 0.2s ease-out;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .notification-dropdown.show {
+        display: block;
+    }
+
+    .notification-header {
+        padding: 20px;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header-title h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0;
+        color: #1a1a1a;
+    }
+
+    .notification-subtitle {
+        font-size: 0.8rem;
+        color: #666;
+        margin-top: 4px;
+        display: block;
+    }
+
+    .mark-read-btn {
+        background: none;
+        border: none;
+        color: #2196F3;
+        font-size: 0.9rem;
+        cursor: pointer;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .mark-read-btn:hover {
+        background-color: rgba(33, 150, 243, 0.1);
+    }
+
+    .notification-list {
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 10px 0;
+    }
+
+    .notification-item {
+        padding: 15px 20px;
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        transition: background-color 0.2s;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .notification-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .notification-icon {
+        width: 40px;
+        height: 40px;
+        background: #f0f7ff;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2196F3;
+    }
+
+    .notification-content {
+        flex: 1;
+    }
+
+    .notification-text {
+        margin: 0;
+        font-size: 0.95rem;
+        color: #1a1a1a;
+        line-height: 1.4;
+    }
+
+    .notification-time {
+        font-size: 0.8rem;
+        color: #666;
+        margin-top: 4px;
+        display: block;
+    }
+
+    .unread-indicator {
+        width: 8px;
+        height: 8px;
+        background: #2196F3;
+        border-radius: 50%;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .notification-item.unread {
+        background-color: #f8f9fa;
+    }
+
+    .notification-footer {
+        padding: 15px 20px;
+        border-top: 1px solid rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+    .notification-footer a {
+        color: #2196F3;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .notification-footer a:hover {
+        text-decoration: underline;
+    }
+
+    /* Custom Scrollbar */
+    .notification-list::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .notification-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .notification-list::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 3px;
+    }
+
+    .notification-list::-webkit-scrollbar-thumb:hover {
+        background: #999;
+    }
+
+    .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff4444;
+        color: white;
+        border-radius: 50%;
+        padding: 4px 6px;
+        font-size: 0.7rem;
+        min-width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid white;
+    }
+    </style>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/seller_dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+    <script>
+    function openAddProductModal() {
+        document.getElementById('addProductModal').classList.add('show');
+    }
+
+    function closeModal() {
+        document.getElementById('addProductModal').classList.remove('show');
+    }
+
+    function updateSubcategories() {
+        const categorySelect = document.getElementById('category');
+        const subcategorySelect = document.getElementById('subcategory');
+        const selectedCategory = categorySelect.value;
+
+        // Clear existing options
+        subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+
+        // Define subcategories for each category
+        const subcategories = {
+                            'CAMERAS & LENSES': [
+                                'DSLR CAMERAS',
+                                'MIRRORLESS CAMERAS',
+                                'POINT & SHOOT CAMERAS',
+                                'ACTION CAMERAS',
+                                'CAMERA LENSES',
+                                'LENS FILTERS',
+                                'LENS ADAPTERS',
+                                'LENS CAPS'
+                            ],
+                            'AUDIO EQUIPMENT': [
+                                'CAMERA MICROPHONES',
+                                'WIRELESS MICROPHONES',
+                                'AUDIO RECORDERS',
+                                'AUDIO MIXERS',
+                                'HEADPHONES',
+                                'AUDIO CABLES',
+                                'WINDSCREENS',
+                                'MICROPHONE STANDS'
+                            ],
+                            'LIGHTING & STUDIO': [
+                                'STUDIO FLASH LIGHTS',
+                                'LED LIGHTS',
+                                'RING LIGHTS',
+                                'LIGHT STANDS',
+                                'SOFTBOXES',
+                                'BACKGROUNDS',
+                                'STUDIO KITS',
+                                'LIGHT METERS'
+                            ],
+                            'ACCESSORIES': [
+                                'CAMERA BAGS',
+                                'TRIPODS',
+                                'MEMORY CARDS',
+                                'CAMERA BATTERIES',
+                                'CAMERA STRAPS',
+                                'CLEANING KITS',
+                                'CARD READERS',
+                                'CAMERA REMOTES'
+                            ]
+                        };
+
+        // Add new options based on selected category
+        if (selectedCategory && subcategories[selectedCategory]) {
+            subcategories[selectedCategory].forEach(sub => {
+                const option = document.createElement('option');
+                option.value = sub;
+                option.textContent = sub;
+                subcategorySelect.appendChild(option);
+            });
+        }
+    }
+
+    function toggleNotifications() {
+        const dropdown = document.getElementById('notificationDropdown');
+        dropdown.classList.toggle('show');
+    }
+
+    function markAllAsRead() {
+        fetch('/mark-all-notifications-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update UI
+                document.querySelectorAll('.notification-item').forEach(item => {
+                    item.classList.remove('unread');
+                });
+                document.querySelector('.notification-badge').textContent = '0';
+            }
+        });
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('notificationDropdown');
+        const notificationBtn = document.querySelector('.notification-btn');
+        
+        if (!dropdown.contains(event.target) && !notificationBtn.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+
+    // Update notification count in real-time (using WebSocket or polling)
+    function updateNotificationCount() {
+        fetch('/get-notification-count')
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('.notification-badge').textContent = data.count;
+            });
+    }
+
+    // Poll for new notifications every 30 seconds
+    setInterval(updateNotificationCount, 30000);
+    </script>
+</body>
+</html> 

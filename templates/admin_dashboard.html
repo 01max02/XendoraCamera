@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="static/css/admin_dashboard.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+
+    <nav class="top-nav">
+        <div class="nav-links">
+            <a href="/admins"><i class="fas fa-chart-line"></i>Dashboard</a>
+            <a href="/admin"><i class="fas fa-users"></i>User Accounts</a>
+            <a href="/pending_sellers"><i class="fas fa-user-clock"></i>Pending Accounts</a>
+            <a href="/archive_accounts"><i class="fas fa-archive"></i>Archived Accounts</a>
+        </div>
+        <form action="/logout" method="get" onsubmit="return confirmLogout();">
+            <button type="submit" class="logout">Logout</button>
+        </form>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="welcome-section">
+            <h1>Welcome, Admin!</h1>
+            <p>Here's what's happening in your Accounts</p>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="title">Total Users</div>
+                    <div class="value">{{ users|length }}</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="title">Active Sellers</div>
+                    <div class="value">{{ users|selectattr('user_type', 'equalto', 'Seller')|list|length }}</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="title">Active Buyers</div>
+                    <div class="value">{{ users|selectattr('user_type', 'equalto', 'Buyer')|list|length }}</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">
+                    <i class="fas fa-user-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="title">Pending Sellers</div>
+                    <div class="value">{{ pending_count }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <form action="/admin" method="get" class="search-form">
+                <div class="search-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" name="search_email" placeholder="Search by email...">
+                </div>
+                <div class="filter-buttons">
+                    <button type="submit" name="sort" value="seller" class="filter-btn">
+                        <i class="fas fa-store"></i> Sellers
+                    </button>
+                    <button type="submit" name="sort" value="buyer" class="filter-btn">
+                        <i class="fas fa-shopping-cart"></i> Buyers
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Address</th>
+                        <th>User Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phone_number }}</td>
+                        <td>{{ user.address }}</td>
+                        <td>
+                            <span class="user-type {{ user.user_type.lower() }}">
+                                {{ user.user_type }}
+                            </span>
+                        </td>
+                        <td class="actions">
+                            {% if user.user_type == "Seller" %}
+                            <a href="/view_shop/{{ user.email }}" class="action-btn view">
+                                <i class="fas fa-store"></i> View Shop
+                            </a>
+                            {% endif %}
+                            <form action="/archive/{{ user.id }}" method="post" style="display:inline;" onsubmit="return confirmArchive()">
+                                <button type="submit" class="action-btn archive">
+                                    <i class="fas fa-archive"></i> Archive
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function confirmArchive() {
+            return confirm("Are you sure you want to archive this account?");
+        }
+
+        function confirmLogout() {
+            return confirm("Are you sure you want to logout?");
+        }
+    </script>
+
+</body>
+</html>

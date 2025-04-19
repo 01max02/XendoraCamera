@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/view_shop.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="/admin" class="back-button">Back to Dashboard</a>
+        
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search products...">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        
+        <div class="shop-info">
+            <div class="shop-header">
+                <img src="{{ url_for('static', filename='images/default-shop.jpg') }}" alt="Shop Avatar" class="shop-avatar">
+                <div class="shop-details">
+                    <h1>{{ seller.first_name }} {{ seller.last_name }}'s Shop</h1>
+                    <p>Joined: {{ seller.created_at.strftime('%B %Y') }}</p>
+                    <p>Email: {{ seller_email }}</p>
+                    <p>Location: Philippines</p>
+                </div>
+            </div>
+
+            <div class="shop-stats">
+                <div class="stat-card">
+                    <h3>Total Products</h3>
+                    <p>{{ products|length }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Sales</h3>
+                    <p>₱{{ total_sales|default('0.00') }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Rating</h3>
+                    <p>4.8/5.0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-pills">
+            <button class="filter-pill active" data-category="all">All</button>
+            <button class="filter-pill" data-category="cameras">Cameras</button>
+            <button class="filter-pill" data-category="lenses">Lenses</button>
+            <button class="filter-pill" data-category="audio">Audio</button>
+            <button class="filter-pill" data-category="lighting">Lighting</button>
+        </div>
+
+        <div class="product-grid">
+            {% for product in products %}
+            <div class="product-card" data-product-id="{{ product.id }}">
+                <div class="status-badge">{{ product.status }}</div>
+                <img src="{{ url_for('static', filename='uploads/' + product.image) if product.image else url_for('static', filename='images/default-product.jpg') }}" alt="{{ product.name }}">
+                <div class="product-info">
+                    <h3>{{ product.name }}</h3>
+                    <p>Category: {{ product.category }}</p>
+                    <p class="price">₱{{ product.price }}</p>
+                    <p>Stock: {{ product.quantity }}</p>
+                    <div class="product-actions">
+                        <button class="wishlist-btn" data-product-id="{{ product.id }}">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button class="quick-view-btn" data-product-id="{{ product.id }}">
+                            Quick View
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="quick-view-modal" id="quickViewModal" style="display: none;">
+        <div class="modal-content">
+            <!-- Modal content will be dynamically populated -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/view_shop.js') }}"></script>
+</body>
+</html>

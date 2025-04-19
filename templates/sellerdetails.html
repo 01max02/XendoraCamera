@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Seller Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sellerdetails.css') }}" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <img src="{{ url_for('static', filename='images/xendora_logo.jpg') }}" alt="Xendora Logo" class="logo">
+            <span class="logo_name">Xendora</span>
+        </div>
+        <ul class="nav-links">
+            <li class="active">
+                <a href="{{ url_for('seller_dash') }}">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="links_name">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('sproduct') }}">
+                    <i class='bx bxs-shopping-bag'></i>
+                    <span class="links_name">Products</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-package'></i>
+                    <span class="links_name">Orders</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('add_new_product') }}">
+                    <i class='bx bx-plus-circle'></i>
+                    <span class="links_name">Add Product</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-line-chart'></i>
+                    <span class="links_name">Analytics</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-message-dots'></i>
+                    <span class="links_name">Messages</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-cog'></i>
+                    <span class="links_name">Settings</span>
+                </a>
+            </li>
+            <li class="log_out">
+                <a href="/logout">
+                    <i class='bx bx-log-out'></i>
+                    <span class="links_name">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <section class="home-section">
+        <nav>
+            <div class="sidebar-button">
+                <i class='bx bx-menu sidebarBtn'></i>
+                <span class="dashboard">Dashboard</span>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Search..." />
+                <i class='bx bx-search'></i>
+            </div>
+            <div class="profile-details">
+                <img src="{{ url_for('static', filename='images/profile-placeholder.jpg') }}" alt="Profile">
+                <span class="admin_name">{{ session.get('name', 'Seller Name') }}</span>
+                <i class='bx bx-chevron-down'></i>
+            </div>
+        </nav>
+
+        <div class="home-content">
+            <div class="overview-boxes">
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">Total Orders</div>
+                        <div class="number">0</div>
+                        <div class="indicator">
+                            <i class='bx bx-up-arrow-alt'></i>
+                            <span class="text">Since yesterday</span>
+                        </div>
+                    </div>
+                    <i class='bx bxs-cart-alt cart'></i>
+                </div>
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">Total Sales</div>
+                        <div class="number">₱0.00</div>
+                        <div class="indicator">
+                            <i class='bx bx-up-arrow-alt'></i>
+                            <span class="text">Since yesterday</span>
+                        </div>
+                    </div>
+                    <i class='bx bxs-cart-add cart two'></i>
+                </div>
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">Total Revenue</div>
+                        <div class="number">₱0.00</div>
+                        <div class="indicator">
+                            <i class='bx bx-up-arrow-alt'></i>
+                            <span class="text">Since yesterday</span>
+                        </div>
+                    </div>
+                    <i class='bx bx-wallet cart three'></i>
+                </div>
+                <div class="box">
+                    <div class="right-side">
+                        <div class="box-topic">Total Returns</div>
+                        <div class="number">0</div>
+                        <div class="indicator">
+                            <i class='bx bx-down-arrow-alt down'></i>
+                            <span class="text">Since yesterday</span>
+                        </div>
+                    </div>
+                    <i class='bx bxs-cart-download cart four'></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".sidebarBtn");
+        sidebarBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+        };
+    </script>
+    <script src="{{ url_for('static', filename='js/sellerdetails.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<section class="promo-carousel-section">
+    <div class="promo-carousel-container">
+        <div class="promo-carousel-track">
+            {% for ad in promotional_ads %}
+            <div class="promo-carousel-slide">
+                <div class="promo-card-content">
+                    <div class="promo-card-image">
+                        <img src="{{ url_for('static', filename='uploads/' + ad.image) }}" alt="{{ ad.title }}">
+                    </div>
+                    <div class="promo-card-info">
+                        <h2>{{ ad.title }}</h2>
+                        <p>{{ ad.description }}</p>
+                        <div class="promo-card-cta">
+                            <span class="promo-price">₱{{ "{:,.2f}".format(ad.price) }}</span>
+                            <a href="{{ ad.link }}" class="promo-button">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <button class="promo-carousel-button prev">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="promo-carousel-button next">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <div class="promo-carousel-nav">
+            {% for ad in promotional_ads %}
+            <div class="promo-carousel-dot {% if loop.first %}active{% endif %}"></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

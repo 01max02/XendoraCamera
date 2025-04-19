@@ -1,0 +1,306 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #3498db;
+    --text-color: #3498db;
+    --light-gray: #ecf0f1;
+    --pink-accent: #B0878F;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rubik', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .columndashboaar {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    gap: 30px;
+}
+
+.sidebar .columndashboaar a {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 1.1em;
+    border-radius: 8px;
+}
+
+.sidebar .columndashboaar a:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.sidebar .columndashboaar img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+/* Main content area */
+.newscreenbody {
+    margin-top: 100px;
+    padding: 30px 60px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Form styling */
+form {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.columnproductna {
+    margin-bottom: 20px;
+}
+
+.ui.heading {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.inputinitial {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--light-gray);
+    border-radius: 8px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.inputinitial:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* Image upload styling */
+.column_two {
+    border: 2px dashed var(--light-gray);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.column_two:hover {
+    border-color: var(--accent-color);
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+.phimagelight {
+    width: 64px;
+    margin-bottom: 15px;
+}
+
+.columndropyour h6 {
+    color: var(--text-color);
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+/* Image preview */
+.view {
+    max-width: 300px;
+    margin: 20px auto;
+}
+
+.view img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Button styling */
+.rowdelete {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.delete, .cancel {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.delete {
+    background: var(--pink-accent);
+    color: white;
+}
+
+.cancel {
+    background: var(--light-gray);
+    color: var(--primary-color);
+}
+
+.delete:hover, .cancel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Profile dropdown styling */
+.profile-dropdown {
+    position: relative;
+    margin-left: auto;
+}
+
+.dropdown-btn {
+    padding: 12px 25px;
+    background: linear-gradient(135deg, var(--accent-color) 0%, #2980b9 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 1.05em;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+}
+
+.dropdown-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 120%;
+    background-color: white;
+    min-width: 180px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.dropdown-content a {
+    color: var(--primary-color);
+    padding: 14px 20px;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--light-gray);
+    padding-left: 25px;
+}
+
+/* Show dropdown when hovering over the dropdown container */
+.profile-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .sidebar {
+        height: auto;
+        padding: 15px 0;
+    }
+
+    .sidebar .columndashboaar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .newscreenbody {
+        margin-top: 250px;
+        padding: 20px;
+    }
+
+    .rowdelete {
+        flex-direction: column;
+    }
+
+    .delete, .cancel {
+        width: 100%;
+    }
+}
+
+/* Grid layout for form fields */
+.rowproductname {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* Animation for form submission */
+@keyframes submitPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.delete:active {
+    animation: submitPulse 0.3s ease-in-out;
+}
+
+/* Update header and profile section styling */
+.header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    width: 100%;
+}
+
+.rowsearch_one {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Update notification icon and profile dropdown positioning */
+.arrowdown_one {
+    width: 24px;
+    height: 24px;
+}

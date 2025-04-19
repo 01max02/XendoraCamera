@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - FourFab</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='view_product.css') }}">
+    <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+    <style>
+        /* Add smooth animation for cart image */
+        .image-float {
+            position: absolute;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 1;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: auto;
+            padding-top: 60px;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 50%;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .modal-content h2 {
+            font-size: 26px;
+            font-weight: bold;
+            color: #B0878F;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            font-size: 18px;
+            color: #34495e;
+            margin-bottom: 20px;
+        }
+
+        .close {
+            color: #B0878F;
+            font-size: 30px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #A07580;
+        }
+
+        /* Modal Buttons */
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .modal-buttons button {
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #B0878F;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-buttons button:hover {
+            background-color: #A07580;
+        }
+
+        /* Cart Full Modal */
+        #cartFullModal .modal-content {
+            background-color: #f1f1f1;
+        }
+
+        /* Animation for modal */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top-header">
+            <div class="action-group">
+                <div class="profile-dropdown">
+                    <button class="dropdown-btn">Profile</button>
+                    <div class="dropdown-content">
+                        <a href="/profile">My Profile</a>
+                        <a href="/orders">My Orders</a>
+                        <a href="/settings">Settings</a>
+                        <a href="#" onclick="logout()">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="product-detail">
+            <div class="product-image">
+                <img id="productImage" src="{{ url_for('static', filename='uploads/' ~ product.image) }}" alt="{{ product.name }}">
+            </div>
+            <div class="product-info">
+                <h1>{{ product.name }}</h1>
+                <p class="description">{{ product.description }}</p>
+                <p class="price">Price: <span>{{ product.price }} PHP</span></p>
+                <p class="variations">Color: {{ product.variations }}</p>
+
+                <!-- Form for adding item to cart -->
+                <form id="addToCartForm">
+                    <div class="size-selection">
+                        <label for="size">Select Size:</label>
+                        <select id="size" name="size" required>
+                            <option value="small">Small</option>
+                            <option value="medium">Medium</option>
+                            <option value="large">Large</option>
+                            <option value="xlarge">Extra Large</option>
+                        </select>
+                    </div>
+
+                    <div class="quantity-selection">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ product.quantity }}" required>
+                    </div>
+
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <input type="hidden" name="product_name" value="{{ product.name }}">
+                    <input type="hidden" name="product_price" value="{{ product.price }}">
+                    <input type="hidden" name="product_image" value="{{ product.image }}">
+                    <input type="hidden" name="product_variation" value="{{ product.variations }}">
+
+                    <div class="buttons">
+                        <button type="button" class="add-to-cart" onclick="addToCart(event)">Add to Cart</button>
+                        <button type="button" class="checkout" onclick="checkoutProduct()">Checkout</button>
+                        <button type="button" class="cancel" onclick="window.history.back();">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="help-section">
+                <h3>GET HELP:</h3>
+                <ul>
+                    <li><a href="/help-centre">Help Centre</a></li>
+                    <li><a href="/return-and-refund">Return and Refund</a></li>
+                    <li><a href="/order-tracking">Order Tracking</a></li>
+                    <li><a href="/contact-us">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="company-section">
+                <h3>COMPANY:</h3>
+                <ul>
+                    <li><a href="/about-us">About Us</a></li>
+                    <li><a href="/privacy-policy">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="follow-us">
+                <h3>FOLLOW US:</h3>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com" target="_blank">
+                        <img src="{{ url_for('static', filename='images/facebook.png') }}" alt="Facebook" class="social-icon">
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank">
+                        <img src="{{ url_for('static', filename='images/instagram.png') }}" alt="Instagram" class="social-icon">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Item Added to Cart -->
+    <div id="itemAddedModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Item Added to Cart!</h2>
+            <p>Your item has been successfully added to your cart.</p>
+            <div class="modal-buttons">
+                <button onclick="closeModal()">Continue Shopping</button>
+                <button onclick="window.location.href='/cart'">Go to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Cart Full -->
+    <div id="cartFullModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Oops! Your Cart is Full</h2>
+            <p>You've reached the limit of 20 items in your cart. Please remove some items to add more.</p>
+            <div class="modal-buttons">
+                <button onclick="closeModal()">Close</button>
+                <button onclick="window.location.href='/cart'">View Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to show the "Item Added" modal
+        function showItemAddedModal() {
+            document.getElementById("itemAddedModal").style.display = "block";
+        }
+
+        // Function to show the "Cart Full" modal
+        function showModal() {
+            document.getElementById("cartFullModal").style.display = "block";
+        }
+
+        // Function to close modals
+        function closeModal() {
+            document.getElementById("cartFullModal").style.display = "none";
+            document.getElementById("itemAddedModal").style.display = "none";
+        }
+
+        // Modified addToCart function to show the "Item Added" modal
+        function addToCart(event) {
+            const form = document.getElementById('addToCartForm');
+            const formData = new FormData(form);
+
+            // Create image for animation
+            const img = document.createElement('img');
+            img.src = "{{ url_for('static', filename='uploads/' ~ product.image) }}";
+            img.classList.add('image-float');
+            img.style.width = '50px';
+            img.style.height = '50px';
+            document.body.appendChild(img);
+
+            // Get the profile button position for the animation
+            const profileButton = document.querySelector('.profile-dropdown');
+            const rect = profileButton.getBoundingClientRect();
+            img.style.position = 'absolute';
+            img.style.left = `${event.clientX - 25}px`;
+            img.style.top = `${event.clientY - 25}px`;
+
+            setTimeout(() => {
+                img.style.transition = 'transform 0.5s ease';
+                img.style.transform = `translate(${rect.left + window.scrollX - 25}px, ${rect.top + window.scrollY - 25}px)`;
+            }, 10);
+
+            // Make the AJAX request to add to cart
+            fetch('/add-to-cart', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove the animated image once the request is complete
+                img.remove();
+
+                if (data.cartFull) {
+                    showModal(); // Show the cart full modal
+                } else {
+                    showItemAddedModal(); // Show the item added modal
+                }
+            })
+            .catch(error => {
+                img.remove();
+                console.error('Error adding item to cart:', error);
+            });
+        }
+    </script>
+</body>
+</html>

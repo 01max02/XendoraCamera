@@ -1,0 +1,74 @@
+<!-- Product Modal -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <button class="close-modal">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="modal-image-container">
+            <img id="modalImage" src="" alt="Product Image">
+        </div>
+        
+        <div class="modal-details">
+            <div class="modal-header">
+                <h2 id="modalTitle" class="modal-title"></h2>
+                <div class="store-link">
+                    <a href="#" id="viewStore" class="view-store-btn">
+                        <i class="fas fa-store"></i>
+                        View Store
+                    </a>
+                </div>
+            </div>
+
+            <div class="modal-info">
+                <div class="modal-price" id="modalPrice"></div>
+                <div class="rating-section">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span class="rating-value">4.5</span>
+                    </div>
+                    <span class="review-count">(150 Reviews)</span>
+                </div>
+                <div class="modal-description" id="modalDescription"></div>
+                <div class="modal-stock" id="modalStock">
+                    <i class="fas fa-box"></i>
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="reviews-section">
+                <h3>Customer Reviews</h3>
+                <div class="reviews-container">
+                    <!-- Reviews will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="modal-controls">
+                <div class="quantity-selector">
+                    <button class="quantity-btn" onclick="decrementQuantity()">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="number" id="quantity" value="1" min="1" class="quantity-input">
+                    <button class="quantity-btn" onclick="incrementQuantity()">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+
+                <div class="modal-actions">
+                    <button onclick="addToCartFromModal()" class="modal-btn add-to-cart-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        Add to Cart
+                    </button>
+                    <button onclick="addToWishlistFromModal()" class="modal-btn add-to-wishlist-btn">
+                        <i class="fas fa-heart"></i>
+                        Add to Wishlist
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

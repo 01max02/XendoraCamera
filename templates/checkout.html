@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+    <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+</head>
+<body>
+    <div class="checkout-container">
+        <h2>Checkout</h2>
+        
+        <!-- Address Section -->
+        <div class="address-container">
+            <h3>Delivery Address</h3>
+            <p>{{ session.get('address', 'No address found.') }}</p>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <div class="summary-header">
+                <span>Product</span>
+                <span>Price</span>
+                <span>Quantity</span>
+                <span>Total Price</span>
+            </div>
+            
+            {% for item in cart_items %}
+            <div class="item" id="item-{{ item.id }}">
+                <div class="item-info">
+                    <img src="{{ url_for('static', filename='uploads/' ~ item.image) }}" alt="{{ item.name }}">
+                    <span>{{ item.name }}</span>
+                </div>
+                <span class="item-price">₱{{ item.price }}</span>
+                <span class="item-quantity">{{ item.quantity }}</span>
+                <span class="item-total">₱{{ (item.price|float * item.quantity|float)|round(2) }}</span>
+            </div>
+            {% endfor %}
+
+            <div class="total">
+                <p>Total: ₱{{ total_price }}</p>
+            </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="payment-method">
+            <h3>Payment Method</h3>
+            <form>
+                <label>
+                    <input type="radio" name="payment" value="credit-card" required>
+                    Credit/Debit Card
+                </label>
+                <label>
+                    <input type="radio" name="payment" value="cod">
+                    Cash on Delivery
+                </label>
+            </form>
+        </div>
+
+        <!-- Buttons -->
+        <div class="action-buttons">
+            <button type="button" class="back-btn" onclick="cancelOrder()">Back</button>
+            <button type="button" class="checkout-btn" onclick="confirmOrder()">Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        function confirmOrder() {
+            const paymentMethod = document.querySelector('input[name="payment"]:checked');
+            
+            if (!paymentMethod) {
+                alert("Please select a payment method");
+                return;
+            }
+
+            // Show loading overlay
+            document.querySelector('.loading-overlay').style.display = 'flex';
+
+            fetch('/confirm_order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    payment_method: paymentMethod.value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirect to success page
+                    window.location.href = `/order_success/${data.order_id}`;
+                } else {
+                    alert(data.message || 'Error processing order');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while processing your order');
+            })
+            .finally(() => {
+                document.querySelector('.loading-overlay').style.display = 'none';
+            });
+        }
+
+        function cancelOrder() {
+            if (confirm("Are you sure you want to cancel this order?")) {
+                window.location.href = '/cart';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xendora Camera Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+</head>
+<body>
+    <header>
+        <div class="top-header">
+            <div class="header-container">
+                <!-- Logo -->
+                <a href="/homepage" class="logo-container">
+                    <img src="{{ url_for('static', filename='images/xendora_logo.jpg') }}" alt="XENDORA" class="logo">
+                </a>
+
+                <!-- Navigation -->
+                <nav class="main-nav">
+                    <ul class="nav-links">
+                        <li><a href="/homepage" class="nav-link">Home</a></li>
+                        <li><a href="/about" class="nav-link">About Us</a></li>
+                        <li><a href="/contact" class="nav-link">Contact Us</a></li>
+                        <li><a href="/help" class="nav-link">Need Help?</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Search and Actions -->
+                <div class="header-right">
+                    <div class="search-container">
+                        <form class="search-form">
+                            <input type="search" placeholder="Search products...">
+                            <button type="submit"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="action-group">
+                        <a href="/profile" class="action-icon"><i class="fas fa-user"></i></a>
+                        <div class="cart-container">
+                            <a href="/cart" class="action-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="cart-count">0</span>
+                            </a>
+                        </div>
+                        <div class="wishlist-container">
+                            <a href="/wishlist" class="action-icon">
+                                <i class="fas fa-heart"></i>
+                                <span class="wishlist-count">0</span>
+                            </a>
+                        </div>
+                        <div class="logout-container">
+                            <a href="{{ url_for('login') }}" class="action-icon" onclick="confirmLogout(event)">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Navigation -->
+        <nav class="category-nav">
+            <div class="nav-container full-width">
+                <ul class="nav-categories">
+                    <li class="nav-item">
+                        <a href="/cameralenses" class="nav-link">Camera Lenses <i class="fas fa-chevron-down"></i></a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-content">
+                                <div class="submenu-column">
+                                    <h4>Lens Categories</h4>
+                                    <ul>
+                                        <li><a href="#">Prime Lenses</a></li>
+                                        <li><a href="#">Zoom Lenses</a></li>
+                                        <li><a href="#">Wide Angle Lenses</a></li>
+                                        <li><a href="#">Telephoto Lenses</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/audio_equipment" class="nav-link">Audio Equipment <i class="fas fa-chevron-down"></i></a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-content">
+                                <div class="submenu-column">
+                                    <h4>Audio Categories</h4>
+                                    <ul>
+                                        <li><a href="#">Microphones</a></li>
+                                        <li><a href="#">Audio Recorders</a></li>
+                                        <li><a href="#">Wireless Systems</a></li>
+                                        <li><a href="#">Audio Mixers</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/lighting_studio" class="nav-link">Lighting & Studio <i class="fas fa-chevron-down"></i></a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-content">
+                                <div class="submenu-column">
+                                    <h4>Studio Categories</h4>
+                                    <ul>
+                                        <li><a href="#">Studio Lights</a></li>
+                                        <li><a href="#">LED Panels</a></li>
+                                        <li><a href="#">Softboxes</a></li>
+                                        <li><a href="#">Backdrops</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/accessories" class="nav-link">Camera Accessories <i class="fas fa-chevron-down"></i></a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-content">
+                                <div class="submenu-column">
+                                    <h4>Accessory Categories</h4>
+                                    <ul>
+                                        <li><a href="#">Tripods</a></li>
+                                        <li><a href="#">Camera Bags</a></li>
+                                        <li><a href="#">Memory Cards</a></li>
+                                        <li><a href="#">Filters</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ url_for('static', filename='images/camera.jpg') }}'); background-size: cover; background-position: center;">
+            <div class="swiper-container hero-slider">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="hero-content">
+                            <h1>Professional Camera Gear</h1>
+                            <p>Discover the latest in photography equipment</p>
+                            <a href="#featured-products" class="cta-button">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+        <!-- New Arrivals Carousel Section -->
+        <div class="carousel-section">
+            <div class="carousel-container">
+                <div class="carousel-track">
+                    <!-- Slide 1 -->
+                    <div class="carousel-slide">
+                        <div class="carousel-content">
+                            <h2>New Arrivals</h2>
+                            <p>Check out our latest camera collection!</p>
+                            <a href="#" class="cta-button">Explore</a>
+                        </div>
+                        <div class="carousel-image">
+                            <img src="{{ url_for('static', filename='images/new_arrivals.jpg') }}" alt="New Arrivals" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="carousel-slide">
+                        <div class="carousel-content">
+                            <h2>Free Shipping</h2>
+                            <p>On all orders above ₱50,000</p>
+                            <a href="#" class="cta-button">Shop Now</a>
+                        </div>
+                        <div class="carousel-image">
+                            <img src="{{ url_for('static', filename='images/free_shipping.jpg') }}" alt="Free Shipping" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="carousel-slide">
+                        <div class="carousel-content">
+                            <h2>Special Discounts</h2>
+                            <p>Up to 20% off on selected items</p>
+                            <a href="#" class="cta-button">View Deals</a>
+                        </div>
+                        <div class="carousel-image">
+                            <img src="{{ url_for('static', filename='images/special_discount.jpg') }}" alt="Special Discounts" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <button class="carousel-button prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-button next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+
+                <!-- Navigation Dots -->
+                <div class="carousel-nav">
+                    <div class="carousel-dot active"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Banner Carousel -->
+        <div class="container floating-banner">
+            <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
+                <!-- Carousel Indicators -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2"></button>
+                </div>
+                
+                <!-- Carousel Items -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h3 class="mb-3">Special Offer</h3>
+                                <p class="mb-0">Get 20% off on all cameras this week!</p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <a href="#" class="btn btn-dark rounded-pill px-4">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h3 class="mb-3">Free Shipping</h3>
+                                <p class="mb-0">On orders above ₱50,000 - Limited time offer!</p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <a href="#" class="btn btn-dark rounded-pill px-4">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h3 class="mb-3">New Arrivals</h3>
+                                <p class="mb-0">Check out our latest camera collection!</p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <a href="#" class="btn btn-dark rounded-pill px-4">Explore</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promotional Section -->
+        <section class="promo-section">
+            <div class="promo-container">
+                <div class="promo-card">
+                    <div class="promo-icon">
+                        <i class="fas fa-percent"></i>
+                    </div>
+                    <div class="promo-content">
+                        <h3>Special Discounts</h3>
+                        <p>Up to 20% off on selected items</p>
+                    </div>
+                </div>
+
+                <div class="promo-card">
+                    <div class="promo-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="promo-content">
+                        <h3>Free Shipping</h3>
+                        <p>On orders over ₱50,000</p>
+                    </div>
+                </div>
+
+                <div class="promo-card">s
+                    <div class="promo-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="promo-content">
+                        <h3>Special Offers</h3>
+                        <p>Get free accessories with every camera</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shop by Category Section -->
+        <section class="categories-section">
+            <h2 class="section-title">Shop by Category</h2>
+            <div class="category-message">
+                <div class="message-content">
+                    <i class="fas fa-store-alt"></i>
+                    <h3>New Categories Coming Soon!</h3>
+                    <p>We're currently updating our product categories to serve you better.</p>
+                    <p>Stay tuned for an enhanced shopping experience!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="featured-products">
+            <div class="section-header">
+                <h2>Featured Products</h2>
+                <p>Discover our sellers' photography gear</p>
+            </div>
+            
+            <div class="product-grid">
+                {% if featured_products %}
+                    {% for product in featured_products %}
+                    <div class="product-card">
+                        <div class="product-image">
+                            {% if product.image %}
+                                <img src="{{ url_for('static', filename='uploads/products/' + product.image) }}" 
+                                     alt="{{ product.name }}"
+                                     onerror="this.src='{{ url_for('static', filename='images/products/no-image.png') }}'">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='images/products/no-image.png') }}" 
+                                     alt="{{ product.name }}">
+                            {% endif %}
+                            <div class="product-overlay">
+                                <button class="card-btn view-btn" data-product-id="{{ product.id }}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="card-btn cart-btn" data-product-id="{{ product.id }}">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                                <button class="card-btn wishlist-btn" data-product-id="{{ product.id }}">
+                                    <i class="{% if product.id in user_wishlist %}fas{% else %}far{% endif %} fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-details">
+                            <h3>{{ product.name }}</h3>
+                            <p class="category">{{ product.category }}</p>
+                            <p class="price">₱{{ "%.2f"|format(product.price|float) }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Product View Modal -->
+        <div id="productModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modal-product-details">
+                    <div class="modal-left">
+                        <img id="modalImage" src="" alt="Product Image">
+                    </div>
+                    <div class="modal-right">
+                        <h2 id="modalName"></h2>
+                        <p id="modalCategory" class="category"></p>
+                        <p id="modalPrice" class="price"></p>
+                        <p id="modalDescription" class="description"></p>
+                        <div class="seller-info">
+                            <i class="fas fa-store"></i>
+                            <span id="modalSeller"></span>
+                        </div>
+                        <div class="stock-info">
+                            <i class="fas fa-box"></i>
+                            <span id="modalStock"></span>
+                        </div>
+                        <div class="quantity-selector">
+                            <label>Quantity:</label>
+                            <div class="quantity-controls">
+                                <button type="button" class="qty-btn minus">-</button>
+                                <input type="number" id="modalQuantity" value="1" min="1" max="100">
+                                <button type="button" class="qty-btn plus">+</button>
+                            </div>
+                        </div>
+                        <div class="modal-buttons">
+                            <button id="modalAddToCart" class="primary-btn">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                            <button id="modalAddToWishlist" class="secondary-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About & Socials</h3>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> +63 912 345 6789</p>
+                    <p><i class="fas fa-envelope"></i> info@xendora.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Manila, Philippines</p>
+                </div>
+                <div class="social-icons">
+                    <a href="#" class="social-icon" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="/shipping">Shipping Info</a></li>
+                    <li><a href="/returns">Returns Policy</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <ul>
+                    <li><a href="/cameras">Cameras</a></li>
+                    <li><a href="/cameralenses">Lenses</a></li>
+                    <li><a href="/audio_equipment">Audio Equipment</a></li>
+                    <li><a href="/lighting_studio">Lighting & Studio</a></li>
+                    <li><a href="/accessories">Accessories</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Subscribe to receive updates, access to exclusive deals, and more.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-cc-amex"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Xendora. All rights reserved.</p>    
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/products.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Log the image paths to console for debugging
+        document.querySelectorAll('.category-card img').forEach(img => {
+            console.log('Image path:', img.src);
+        });
+    });
+    </script>
+</body>
+</html>

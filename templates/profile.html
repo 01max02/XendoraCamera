@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Modern Sidebar -->
+        <div class="sidebar">
+            <h2><i class="fas fa-user-circle"></i> User Menu</h2>
+            <ul>
+                <li>
+                    <a href="/profile">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/cart" class="active">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>My Cart</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/orders">
+                        <i class="fas fa-box"></i>
+                        <span>My Orders</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/homepage">
+                        <i class="fas fa-home"></i>
+                        <span>Return to Homepage</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/change-password">
+                        <i class="fas fa-key"></i>
+                        <span>Change Password</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content with Modern Layout -->
+        <div class="main-content">
+            <div class="profile-card">
+                <!-- Profile Header with Animated Elements -->
+                <div class="profile-header">
+                    <div class="profile-image-wrapper">
+                        <div class="profile-image">
+                            <img src="{{ url_for('static', filename='uploads/' + user_data.profile_image) if user_data.profile_image else url_for('static', filename='images/default-avatar.png') }}" 
+                                 alt="Profile Picture" 
+                                 id="profileImage">
+                            <label for="profilePicInput" class="camera-icon">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                        </div>
+                        <input type="file" 
+                               id="profilePicInput" 
+                               name="profile_image" 
+                               accept="image/*" 
+                               hidden
+                               onchange="uploadProfilePic()">
+                    </div>
+                    <div class="profile-info">
+                        <h2>{{ user_data.first_name }} {{ user_data.last_name }}</h2>
+                        <p>{{ user_data.email }}</p>
+                    </div>
+                </div>
+
+                <!-- Floating Edit Button -->
+                <button class="floating-edit-btn" onclick="enableEditing()">
+                    <i class="fas fa-edit"></i>
+                </button>
+
+                <!-- Modern Form Layout -->
+                <form method="POST" action="/profile" id="profileForm" class="modern-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" id="first_name" name="first_name" 
+                                   value="{{ user_data.first_name }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" id="last_name" name="last_name" 
+                                   value="{{ user_data.last_name }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" 
+                                   value="{{ user_data.email }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone_number">Phone Number</label>
+                            <input type="text" id="phone_number" name="phone_number" 
+                                   value="{{ user_data.phone_number }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" name="address" 
+                                   value="{{ user_data.address }}" disabled>
+                        </div>
+
+                        {% if user_data.user_type == 'Seller' %}
+                        <div class="form-group">
+                            <label for="valid_id">Valid ID</label>
+                            <input type="text" id="valid_id" name="valid_id" 
+                                   value="{{ user_data.valid_id }}" disabled>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Hidden Action Buttons -->
+                    <div class="form-actions" id="editActions">
+                        <button type="submit" id="updateButton" class="action-btn save-btn">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button type="button" id="cancelButton" class="action-btn cancel-btn" onclick="cancelEditing()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+</body>
+</html>

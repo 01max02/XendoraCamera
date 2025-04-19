@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Sellers Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pending_sellers.css') }}">
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-links">
+            <a href="/admins">
+                <i class="fas fa-chart-line"></i>
+                Dashboard
+            </a>
+            <a href="/admin">
+                <i class="fas fa-users"></i>
+                User Accounts
+            </a>
+            <a href="/pending_sellers" class="active">
+                <i class="fas fa-user-clock"></i>
+                Pending Accounts
+            </a>
+            <a href="/archive_accounts">
+                <i class="fas fa-archive"></i>
+                Archived Accounts
+            </a>
+        </div>
+        <a href="{{ url_for('logout') }}" class="logout" onclick="return confirmLogout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+        </a>
+    </nav>
+
+    <div class="dashboard">
+        <div class="welcome-section">
+            <h1>Pending Sellers Dashboard</h1>
+            <p>Review and manage seller applications</p>
+        </div>
+
+        <div class="search-section">
+            <form action="/pending_sellers" method="get" class="search-form">
+                <div class="search-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" name="search" placeholder="Search by name or email" value="{{ search_query }}">
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>User Type</th>
+                    <th>Documents</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for seller in sellers %}
+                <tr>
+                    <td>{{ seller.first_name }}</td>
+                    <td>{{ seller.last_name }}</td>
+                    <td>{{ seller.email }}</td>
+                    <td>{{ seller.phone_number }}</td>
+                    <td>{{ seller.address }}</td>
+                    <td>{{ seller.user_type }}</td>
+                    <td>
+                        {% if seller.valid_id %}
+                            <button class="view-doc" onclick="window.open('/static/requirements/{{ seller.valid_id }}', '_blank')">View Valid ID</button>
+                        {% else %}
+                            <span class="no-doc">No document uploaded</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="/approve/{{ seller.id }}" method="post" style="display:inline;">
+                            <button type="submit" class="approve">Approve</button>
+                        </form>
+                        <form id="reject-form-{{ seller.id }}" action="/reject_seller/{{ seller.id }}" method="post" style="display:inline;">
+                            <input type="hidden" name="reason" id="reason-input-{{ seller.id }}">
+                            <button type="button" class="reject" data-user-id="{{ seller.id }}" onclick="showRejectionModal(this)">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Rejection Reason Modal -->
+    <div id="rejectionModal" class="modal">
+        <div class="modal-content">
+            <h3>Reason for Rejection</h3>
+            <form id="rejectionForm">
+                <!-- Dropdown for predefined reasons -->
+                <select id="reasonSelect" onchange="toggleCustomReason(this)">
+                    <option value="">Select a reason</option>
+                    <option value="Incomplete Documents">Incomplete Documents</option>
+                    <option value="Invalid Information">Invalid Information</option>
+                    <option value="Non-Compliant Business Type">Non-Compliant Business Type</option>
+                    <option value="Duplicate Application">Duplicate Application</option>
+                    <option value="Others">Others</option>
+                </select>
+
+                <!-- Custom reason textarea, hidden by default -->
+                <textarea id="customReason" style="display: none;" placeholder="Type the reason here..."></textarea>
+
+                <div class="modal-actions">
+                    <button type="button" class="submit" onclick="submitRejection()">Submit</button>
+                    <button type="button" class="close" onclick="closeRejectionModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/pending_sellers.js') }}"></script>
+</body>
+</html>

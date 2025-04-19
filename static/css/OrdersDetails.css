@@ -1,0 +1,921 @@
+/*=========== TABLE OF CONTENTS ===========
+1. Common CSS
+2. Page CSS
+==========================================*/
+
+/*-------------------------------------
+  1. Common CSS
+--------------------------------------*/
+
+
+.dashboaard_one {
+  height: 16px;
+  width: 16px;
+}
+
+.dhi-group {
+  display: inline-flex;
+  gap: inherit;
+  align-items: center;
+}
+
+.group-59 {
+  color: var(--gray_500_cc) !important;
+  font-size: 16px;
+  font-weight: 600;
+  width: 7.28px;
+  height: 22px;
+}
+
+.home {
+  color: var(--gray_500_cc) !important;
+  font-size: 16px !important;
+}
+
+.notifications {
+  height: 24px;
+  width: 24px;
+}
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+  align-self: center; /* Align the dropdown with the other header elements */
+  margin-right: 15px;
+}
+
+.dropdown-btn {
+  background-color: #B0878F; /* Button background color */
+    color: white; /* Button text color */
+    padding: 8px 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.profile-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  color: #B0878F; /* Text color for dropdown links */
+    padding: 8px 10px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    border-bottom: 1px solid #f4f4f4; /* Optional: separator between items */
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+.dropdown-content a:hover {
+  background-color: #f4f4f4; /* Background on hover */
+}
+
+.profile-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.profile-dropdown:hover .dropdown-btn {
+  background-color: #A07580; /* Darker button background on hover */
+}
+
+
+.columnsettings-1 {
+  gap: var(--space-md);
+  display: flex;
+  background-color: var(--white_a700);
+  width: 32%;
+  flex-direction: column;
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gray_300);
+  @media only screen and (max-width: 1050px) {
+    width: 100%;
+  }
+}
+
+.rowsettings_one {
+  gap: var(--space-md);
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+
+.settings_one {
+  height: 56px;
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+  background-color: var(--gray_500);
+  width: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xs);
+}
+
+.columncustomer {
+  gap: var(--space-xs);
+  align-self: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: start;
+}
+
+.products {
+  font-family: Open Sans !important;
+}
+
+.columnfullname {
+  gap: var(--space-xs);
+  display: flex;
+  align-self: stretch;
+  flex-direction: column;
+  align-items: start;
+}
+
+.fullname {
+  color: var(--gray_600) !important;
+}
+
+.view_profile {
+  color: var(--white_a700);
+  padding-left: 34px;
+  padding-right: 34px;
+  font-family: Open Sans;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: var(--gray_500);
+  align-self: stretch;
+  text-align: center;
+  height: 32px;
+  border-radius: var(--radius-xs);
+  @media only screen and (max-width: 550px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.orders_details {
+  gap: var(--space-md);
+  display: flex;
+  @media only screen and (max-width: 1050px) {
+    flex-direction: column;
+  }
+}
+
+.ordersid6743 {
+  color: var(--gray_900) !important;
+  font-family: Open Sans !important;
+}
+
+.orderid {
+  color: var(--gray_900_a3) !important;
+  margin-bottom: 4px;
+  font-family: Open Sans !important;
+  font-size: 16px !important;
+  align-self: start;
+}
+
+.rowcomputer_one {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.computer_one {
+  height: 20px;
+  width: 20px;
+}
+
+.view {
+  height: 40px;
+  margin-left: 24px;
+  background-color: var(--black_900_33);
+  width: 40px;
+  border-radius: var(--radius-xs);
+}
+
+.loremipsum {
+  margin-left: 16px;
+  font-size: 16px !important;
+}
+
+.rowtwentyfiveth {
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
+  display: flex;
+  @media only screen and (max-width: 550px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.twentyfivethous {
+  font-size: 14px !important;
+}
+
+.rowtwo {
+  margin-left: 38px;
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
+  display: flex;
+  @media only screen and (max-width: 550px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.row_one {
+  border-bottom: 1px solid var(--gray_900_33);
+}
+
+.rowprice {
+  margin-left: 272px;
+  padding-left: 6px;
+  padding-right: 6px;
+  display: flex;
+}
+
+.feb162022feb {
+  font-size: 16px !important;
+}
+
+.subtotal {
+  color: var(--gray_900) !important;
+  font-size: 16px !important;
+}
+
+.total_one {
+  color: var(--gray_900) !important;
+}
+
+/*-------------------------------------
+  2. Page CSS
+--------------------------------------*/
+.orders-details {
+  background-color: var(--gray_50);
+  width: 100%;
+}
+
+.rowdashboaard {
+  display: flex;
+  align-items: start;
+}
+
+.sidebar {
+  padding-top: 30px;
+  padding-left: 24px;
+  padding-right: 24px;
+  gap: 44px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--gray_500);
+  width: 262px;
+  height: 100vh;
+  position: sticky !important;
+  top: 0px;
+  overflow: auto;
+  @media only screen and (max-width: 550px) {
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.imagefifteen {
+  height: 36px;
+  margin-left: 8px;
+  margin-right: 6px;
+  object-fit: cover;
+  width: 100%;
+  @media only screen and (max-width: 1050px) {
+    height: auto;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+
+.columndashboaar {
+  align-self: stretch;
+  width: 100%;
+  padding: 0px;
+  li {
+    width: 100%;
+  }
+
+  a {
+    gap: var(--space-xs);
+    color: var(--white_a700);
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 22px 22px 22px ;
+  }
+
+  span {
+    flex-grow: 1;
+  }
+}
+
+.newscreenbody {
+  gap: 20px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  background-color: var(--gray_500);
+  justify-content: flex-end;
+  align-items: center;
+  padding: 28px 60px 28px 56px;
+  border-bottom: 1px solid var(--gray_900_33);
+  @media only screen and (max-width: 1050px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  @media only screen and (max-width: 550px) {
+    padding: 20px;
+  }
+}
+
+.rowsearch_one {
+  width: 22%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  @media only screen and (max-width: 1050px) {
+    width: 100%;
+  }
+}
+
+.search_one {
+  height: 28px;
+  width: 28px;
+}
+
+.button_four {
+  color: var(--white_a700);
+  letter-spacing: 0.25px;
+  font-family: Open Sans;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 4px;
+  display: flex;
+  width: 42%;
+  background-image: url(../public/images/img_arrowdown.svg);
+  background-repeat: no-repeat;
+  background-size: 16px;
+  background-position: calc(100% - 16px);
+  padding: 10px var(--space-md);
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--white_a700);
+}
+
+.column_one {
+  margin-left: 24px;
+  margin-right: 48px;
+  gap: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  @media only screen and (max-width: 1050px) {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+
+.column {
+  gap: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+}
+
+.columnordersdet {
+  gap: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.ordersdetails {
+  color: var(--gray_500) !important;
+  font-family: Open Sans !important;
+}
+
+.rowhome {
+  gap: 46px;
+  display: flex;
+  align-self: stretch;
+  flex-wrap: wrap;
+}
+
+.rowhome-1 {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  word-wrap: break-word;
+  gap: inherit;
+}
+
+.columnsettings {
+  gap: var(--space-xl);
+  display: flex;
+  background-color: var(--white_a700);
+  flex-direction: column;
+  padding: var(--space-xl) var(--space-md);
+  border-radius: var(--radius-sm);
+  border: 3px solid var(--gray_500);
+  @media only screen and (max-width: 550px) {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+
+.columnordersid6 {
+  gap: var(--space-xs);
+  display: flex;
+  flex-direction: column;
+}
+
+.rowordersid6743 {
+  gap: var(--space-xl);
+  display: flex;
+  align-items: center;
+}
+
+.pending {
+  color: var(--white_a700);
+  padding-left: 6px;
+  padding-right: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: var(--gray_500);
+  text-align: center;
+  height: 32px;
+  min-width: 64px;
+  border-radius: var(--radius-xs);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  @media only screen and (max-width: 1050px) {
+    flex-direction: column;
+  }
+}
+
+.rowcalendar_one {
+  gap: var(--space-xs);
+  display: flex;
+  align-items: center;
+}
+
+.rowarrowdown {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  @media only screen and (max-width: 1050px) {
+    align-self: stretch;
+  }
+
+  @media only screen and (max-width: 550px) {
+    flex-direction: column;
+  }
+}
+
+.arrowdown {
+  color: var(--gray_900);
+  font-size: 14px;
+  font-weight: 600;
+  gap: var(--space-md);
+  display: flex;
+  background-color: var(--gray_100);
+  width: 38%;
+  background-image: url(../public/images/img_arrowdown_gray_900.svg);
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position: calc(100% - 14px);
+  padding: var(--space-sm);
+  border-radius: var(--radius-xs);
+  @media only screen and (max-width: 550px) {
+    width: 100%;
+  }
+}
+
+.fluentprintsixt {
+  margin-left: 20px;
+  background-color: var(--gray_100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 52px;
+  padding: var(--space-sm);
+  border-radius: var(--radius-xs);
+  @media only screen and (max-width: 550px) {
+    margin-left: 0px;
+  }
+}
+
+.save {
+  color: var(--gray_900);
+  margin-left: 20px;
+  padding-left: var(--space-sm);
+  padding-right: var(--space-sm);
+  font-size: 14px;
+  font-weight: 600;
+  background-color: var(--gray_100);
+  text-align: center;
+  height: 52px;
+  min-width: 58px;
+  border-radius: var(--radius-xs);
+  @media only screen and (max-width: 550px) {
+    margin-left: 0px;
+  }
+}
+
+.columnpaymentin {
+  gap: var(--space-md);
+  display: flex;
+  background-color: var(--white_a700);
+  width: 32%;
+  flex-direction: column;
+  align-items: start;
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gray_300);
+  @media only screen and (max-width: 1050px) {
+    width: 100%;
+  }
+}
+
+.ewallet {
+  color: var(--gray_600) !important;
+  margin-bottom: 60px;
+  font-size: 16px !important;
+}
+
+.columnnote {
+  gap: 10px;
+  background-color: var(--white_a700);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: start;
+  border-radius: var(--radius-sm);
+  @media only screen and (max-width: 1050px) {
+    align-self: stretch;
+  }
+}
+
+.type_some_notes {
+  color: var(--gray_600);
+  font-size: 16px;
+  background-color: var(--white_a700);
+  align-self: stretch;
+  height: 120px;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gray_300);
+}
+
+.product {
+  gap: var(--space-sm);
+  display: flex;
+  background-color: var(--white_a700);
+  flex-direction: column;
+  padding: var(--space-xl) var(--space-md);
+  border-radius: var(--radius-md);
+  border: 3px solid var(--gray_500);
+  @media only screen and (max-width: 550px) {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+
+.rowproducts {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.lineone_one {
+  height: 0.5px;
+  background-color: var(--gray_900_33);
+}
+
+.rowproductname {
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-md);
+  padding-left: 6px;
+  flex: 1;
+  display: flex;
+}
+
+.productname {
+  color: var(--gray_900_a3) !important;
+  font-family: Open Sans !important;
+}
+
+.roworderid {
+  display: flex;
+  padding: var(--space-md);
+}
+
+.rowquantity {
+  margin-left: 38px;
+  display: flex;
+  padding: var(--space-md);
+}
+
+.rowtotal {
+  margin-left: 272px;
+  display: flex;
+  padding: var(--space-md) 6px var(--space-md) var(--space-md);
+}
+
+.total-2 {
+  color: var(--gray_900_a3) !important;
+  margin-top: 4px;
+  font-family: Open Sans !important;
+  font-size: 16px !important;
+  align-self: end;
+}
+
+.total {
+  gap: var(--space-md);
+  display: flex;
+  flex-direction: column;
+}
+
+.rowsubtotal {
+  margin-top: 16px;
+  gap: 146px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  @media only screen and (max-width: 1050px) {
+    gap: 20px;
+  }
+}
+
+.tax {
+  gap: 142px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  @media only screen and (max-width: 1050px) {
+    gap: 20px;
+  }
+}
+
+.discount {
+  gap: 189px;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  @media only screen and (max-width: 1050px) {
+    gap: 20px;
+  }
+}
+
+.rowsippingrate {
+  gap: 161px;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  @media only screen and (max-width: 1050px) {
+    gap: 20px;
+  }
+}
+
+.total-1 {
+  gap: 115px;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  @media only screen and (max-width: 1050px) {
+    gap: 20px;
+  }
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Open Sans;
+}
+
+* {
+  box-sizing: border-box;
+  line-height: normal;
+  font-family: inherit;
+  margin: unset;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+a {
+  text-decoration: none;
+  display: block;
+}
+
+ul {
+  margin: 0;
+  margin-inline: unset !important;
+  padding: 0;
+  list-style: none;
+}
+
+[type="text"],
+input:where(:not([type])),
+[type="email"],
+[type="url"],
+[type="password"],
+[type="number"],
+[type="date"],
+[type="datetime-local"],
+[type="month"],
+[type="search"],
+[type="tel"],
+[type="time"],
+[type="week"],
+[multiple],
+textarea,
+select,
+button {
+  appearance: none;
+  background-color: transparent;
+  border-color: unset;
+  border-width: 0;
+  border-radius: unset;
+  padding: unset;
+  font-size: unset;
+  line-height: unset;
+  color: inherit;
+}
+input:focus-visible,
+[multiple]:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+@font-face {
+  font-display: swap;
+  font-style: normal;
+  src: url("../public/fonts/RubikRomanMedium.ttf");
+  font-family: "Open Sans";
+  font-weight: 500;
+}
+@font-face {
+  font-display: swap;
+  font-style: normal;
+  src: url("../public/fonts/RubikSemiBold.ttf");
+  font-family: "Open Sans";
+  font-weight: 600;
+}
+@font-face {
+  font-display: swap;
+  font-style: normal;
+  src: url("../public/fonts/OpenSansSemiBold.ttf");
+  font-family: "Open Sans";
+  font-weight: 600;
+}
+@font-face {
+  font-display: swap;
+  font-style: normal;
+  src: url("../public/fonts/InterMedium.ttf");
+  font-family: "Open Sans";
+  font-weight: 500;
+}
+@font-face {
+  font-display: swap;
+  font-style: normal;
+  src: url("../public/fonts/OpenSans.ttf");
+  font-family: "Open Sans";
+  font-weight: 400;
+}
+/*=========== TABLE OF CONTENTS ===========
+1. Heading CSS
+2. Table CSS
+==========================================*/
+
+/*-------------------------------------
+  1. Heading CSS
+--------------------------------------*/
+.ui.heading.size-headingxs {
+  font-size: 16px;
+  font-weight: 600;
+  font-style: bold;
+}
+
+.ui.heading.size-headings {
+  font-size: 20px;
+  font-weight: 600;
+  font-style: bold;
+}
+
+.ui.heading.size-headingmd {
+  font-size: 20px;
+  font-weight: 600;
+  font-style: bold;
+}
+
+.ui.heading.size-headinglg {
+  font-size: 24px;
+  font-weight: 600;
+  font-style: bold;
+  @media only screen and (max-width: 1050px) {
+    font-size: 22px;
+  }
+}
+
+.ui.heading.size-textxs {
+  font-size: 14px;
+  font-weight: 500;
+  font-style: bold;
+}
+
+.ui.heading {
+  color: var(--black_900);
+  font-family: Open Sans;
+}
+
+/*-------------------------------------
+  2. Table CSS
+--------------------------------------*/
+.ui.table.size-xs tbody td {
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-sm);
+}
+/*=========== TABLE OF CONTENTS ===========
+1. CSS Variables
+2. Utility CSS
+==========================================*/
+
+/*-------------------------------------
+  1. CSS Variables
+--------------------------------------*/
+:root {
+  /*------Color variables------*/
+  --black_900: #000000;
+  --black_900_33: #00000033;
+  --gray_100: #f4f1f1;
+  --gray_300: #e7e7e3;
+  --gray_50: #fff8f9;
+  --gray_500: #b0878f;
+  --gray_500_cc: #b0878fcc;
+  --gray_600: #70706e;
+  --gray_900: #232321;
+  --gray_900_33: #23232133;
+  --gray_900_a3: #232321a3;
+  --white_a700: #ffffff;
+
+  /*------Border radius variables------*/
+  --radius-xs: 8px;
+  --radius-sm: 16px;
+  --radius-md: 24px;
+
+  /*------Spacing variables------*/
+  --space-xs: 8px;
+  --space-sm: 14px;
+  --space-md: 16px;
+  --space-lg: 22px;
+  --space-xl: 24px;
+}
+
+/*-------------------------------------
+  2. Utility CSS
+--------------------------------------*/
+.flex-row-center-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+

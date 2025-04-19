@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders List - Xendora</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/seller_dash.css') }}">
+    <style>
+        .orders-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .order-table th {
+            background-color: var(--background-light);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        .order-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .status-pending { color: #ffa500; }
+        .status-processing { color: #3498db; }
+        .status-shipped { color: #0066cc; }
+        .status-delivered { color: #2ecc71; }
+        
+        .status-select {
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Xendora" class="logo">
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('seller_dash') }}" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <a href="{{ url_for('Allproducts') }}" class="nav-item">
+                    <i class="fas fa-box"></i>
+                    <span>Products</span>
+                </a>
+                
+                <a href="{{ url_for('OrdersList') }}" class="nav-item active">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </a>
+                
+                <a href="#messages" class="nav-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Messages</span>
+                    <span class="badge">3</span>
+                </a>
+                
+                <a href="{{ url_for('profile') }}" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="theme-toggle-btn" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="#" class="logout-btn" onclick="confirmLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <div class="top-nav">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search orders...">
+                </div>
+
+                <div class="nav-actions">
+                    <div class="notifications">
+                        <button class="notification-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">5</span>
+                        </button>
+                    </div>
+
+                    <div class="profile-dropdown">
+                        <button class="dropdown-btn">Profile</button>
+                        <div class="dropdown-content">
+                            <a href="/profile">Profile</a>
+                            <a href="#" onclick="confirmLogout()">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders List -->
+            <div class="orders-container">
+                <h2>Orders List</h2>
+                <div class="table-responsive">
+                    <table class="order-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Product</th>
+                                <th>Customer Email</th>
+                                <th>Quantity</th>
+                                <th>Total Price</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>{{ order.id }}</td>
+                                <td>{{ order.name }}</td>
+                                <td>{{ order.email }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>₱{{ order.total_price }}</td>
+                                <td class="status-{{ order.status.lower() }}">{{ order.status }}</td>
+                                <td>{{ order.date.strftime('%Y-%m-%d %H:%M:%S') if order.date else 'N/A' }}</td>
+                                <td>
+                                    <form action="{{ url_for('update_order_status', order_id=order.id) }}" method="POST" style="display: inline;">
+                                        <select name="stat" class="status-select" onchange="this.form.submit()">
+                                            <option value="" disabled selected>Update Status</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Processing">Processing</option>
+                                            <option value="Shipped">Shipped</option>
+                                            <option value="Delivered">Delivered</option>
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function confirmLogout() {
+            var result = confirm("Are you sure you want to logout?");
+            if (result) {
+                window.location.href = "/logout";
+            }
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.setAttribute('data-theme', 
+                document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+            );
+            themeToggle.querySelector('i').classList.toggle('fa-sun');
+            themeToggle.querySelector('i').classList.toggle('fa-moon');
+        });
+    </script>
+</body>
+</html>

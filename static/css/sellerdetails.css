@@ -1,0 +1,343 @@
+/* Google Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #6c7293;
+    --secondary-color: #58606e;
+    --text-color: #333;
+    --light-text: #707070;
+    --border-color: #e0e0e0;
+    --white: #fff;
+    --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --sidebar-bg: #191c24;
+    --nav-bg: #191c24;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 260px;
+    background: var(--sidebar-bg);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    transition: width 0.3s ease;
+    z-index: 100;
+}
+
+.sidebar.active {
+    width: 80px;
+}
+
+.sidebar .logo-details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    color: var(--white);
+}
+
+.logo-details .logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    margin-right: 1rem;
+}
+
+.logo-details .logo_name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.sidebar .nav-links {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-links li {
+    margin-bottom: 0.5rem;
+}
+
+.nav-links li a {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    color: var(--white);
+}
+
+.nav-links li a:hover,
+.nav-links li.active a {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.nav-links li a i {
+    font-size: 1.2rem;
+    min-width: 30px;
+}
+
+.nav-links li a .links_name {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--white);
+}
+
+.nav-links li a:hover .links_name,
+.nav-links li.active a .links_name {
+    color: var(--white);
+}
+
+.nav-links li.log_out {
+    position: fixed;
+    bottom: 1.5rem;
+    width: calc(260px - 3rem);
+}
+
+.home-section {
+    position: relative;
+    background: #f5f6fa;
+    min-height: 100vh;
+    left: 260px;
+    width: calc(100% - 260px);
+    transition: all 0.3s ease;
+}
+
+.sidebar.active ~ .home-section {
+    left: 80px;
+    width: calc(100% - 80px);
+}
+
+.home-section nav {
+    position: fixed;
+    width: calc(100% - 260px);
+    left: 260px;
+    height: 70px;
+    background: var(--nav-bg);
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+    z-index: 99;
+    color: var(--white);
+}
+
+.sidebar.active ~ .home-section nav {
+    left: 80px;
+    width: calc(100% - 80px);
+}
+
+nav .sidebar-button {
+    display: flex;
+    align-items: center;
+}
+
+nav .sidebar-button i {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.search-box {
+    display: none;
+}
+
+.profile-details {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profile-details img {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.profile-details .admin_name {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--white);
+}
+
+.home-content {
+    padding: 90px 1.5rem 1.5rem;
+}
+
+.overview-boxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.overview-boxes .box {
+    background: var(--nav-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--white);
+}
+
+.box .right-side {
+    flex: 1;
+}
+
+.box-topic {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+}
+
+.number {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+}
+
+.indicator {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--light-text);
+}
+
+.indicator i {
+    margin-right: 0.5rem;
+}
+
+.box i.cart {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .overview-boxes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 80px;
+    }
+    .home-section {
+        left: 80px;
+        width: calc(100% - 80px);
+    }
+    .home-section nav {
+        left: 80px;
+        width: calc(100% - 80px);
+    }
+    .overview-boxes {
+        grid-template-columns: 1fr;
+    }
+    .search-box {
+        display: none;
+    }
+} 
+
+/* Profile Dropdown Styles */
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--sidebar-bg);
+    box-shadow: var(--box-shadow);
+    border-radius: 8px;
+    width: 200px;
+    z-index: 1000;
+    color: var(--white);
+}
+
+.profile-dropdown.show {
+    display: block;
+}
+
+.profile-dropdown ul {
+    list-style: none;
+    padding: 0;
+}
+
+.profile-dropdown li {
+    padding: 12px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+}
+
+.profile-dropdown li:hover {
+    background: var(--primary-color);
+}
+
+.profile-dropdown li a {
+    color: var(--white);
+    text-decoration: none;
+}
+
+/* Modal Styles */
+.details-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.close-modal {
+    margin-top: 1rem;
+    padding: 8px 16px;
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    background: var(--secondary-color);
+}
+
+/* Add hover transition for boxes */
+.box {
+    transition: transform 0.3s ease;
+}
+
+.box:hover {
+    cursor: pointer;
+} 

@@ -1,0 +1,36 @@
+<section class="promo-carousel-section">
+    <div class="section-header">
+        <h2>Special Offers</h2>
+        <p>Don't miss out on these amazing deals</p>
+    </div>
+    
+    <div class="promo-carousel">
+        <button class="carousel-btn prev-btn">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="promo-wrapper">
+            {% for promo in promotions %}
+            <div class="promo-slide">
+                <div class="promo-card">
+                    <div class="promo-content">
+                        <span class="promo-tag">{{ promo.tag }}</span>
+                        <h3>{{ promo.title }}</h3>
+                        <p>{{ promo.description }}</p>
+                        <a href="{{ promo.link }}" class="promo-btn">{{ promo.button_text }}</a>
+                    </div>
+                    <div class="promo-image">
+                        <img src="{{ url_for('static', filename='images/' + promo.image) }}" alt="{{ promo.title }}">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <button class="carousel-btn next-btn">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+    
+    <div class="carousel-dots"></div>
+</section> 

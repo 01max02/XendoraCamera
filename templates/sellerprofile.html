@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Seller Sidebar -->
+        <div class="sidebar">
+            <h2><i class="fas fa-store"></i> Seller Menu</h2>
+            <ul>
+                <li>
+                    <a href="/profile" class="active">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/manage-products">
+                        <i class="fas fa-box"></i>
+                        <span>Manage Products</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/manage-orders">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Orders</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/sales-analytics">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/homepage">
+                        <i class="fas fa-home"></i>
+                        <span>Return to Homepage</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/change-password">
+                        <i class="fas fa-key"></i>
+                        <span>Change Password</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="profile-card">
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="profile-image-wrapper">
+                        <div class="profile-image">
+                            <img src="{{ url_for('static', filename='uploads/' + user_data.profile_image) if user_data.profile_image else url_for('static', filename='images/default-avatar.png') }}" 
+                                 alt="Profile Picture" 
+                                 id="profileImage">
+                            <label for="profilePicInput" class="camera-icon">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                        </div>
+                        <input type="file" 
+                               id="profilePicInput" 
+                               name="profile_image" 
+                               accept="image/*" 
+                               hidden
+                               onchange="uploadProfilePic()">
+                    </div>
+                    <div class="profile-info">
+                        <h2>
+                            {{ user_data.first_name }} {{ user_data.last_name }}
+                            <span class="seller-badge">
+                                <i class="fas fa-store"></i> Verified Seller
+                            </span>
+                        </h2>
+                        <p>{{ user_data.email }}</p>
+                    </div>
+                </div>
+
+                <!-- Seller Statistics Dashboard -->
+                <div class="seller-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>Total Products</h3>
+                        <p>{{ seller_stats.total_products }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Total Sales</h3>
+                        <p>${{ seller_stats.total_sales }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-star"></i>
+                        <h3>Average Rating</h3>
+                        <p>{{ seller_stats.average_rating }}/5</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Total Customers</h3>
+                        <p>{{ seller_stats.total_customers if seller_stats.total_customers else 0 }}</p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="seller-actions">
+                    <a href="/add-product" class="action-btn primary">
+                        <i class="fas fa-plus"></i> Add New Product
+                    </a>
+                    <a href="/manage-orders" class="action-btn">
+                        <i class="fas fa-shipping-fast"></i> Pending Orders
+                    </a>
+                    <a href="/sales-analytics" class="action-btn">
+                        <i class="fas fa-chart-bar"></i> View Analytics
+                    </a>
+                </div>
+
+                <!-- Floating Edit Button -->
+                <button class="floating-edit-btn" onclick="enableEditing()">
+                    <i class="fas fa-edit"></i>
+                </button>
+
+                <!-- Profile Form -->
+                <form method="POST" action="/profile" id="profileForm" class="modern-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" id="first_name" name="first_name" 
+                                   value="{{ user_data.first_name }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" id="last_name" name="last_name" 
+                                   value="{{ user_data.last_name }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" 
+                                   value="{{ user_data.email }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone_number">Phone Number</label>
+                            <input type="text" id="phone_number" name="phone_number" 
+                                   value="{{ user_data.phone_number }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" name="address" 
+                                   value="{{ user_data.address }}" disabled>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions" id="editActions">
+                        <button type="submit" id="updateButton" class="action-btn save-btn">
+                            <i class="fas fa-check"></i> Save Changes
+                        </button>
+                        <button type="button" id="cancelButton" class="action-btn cancel-btn" onclick="cancelEditing()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    <div class="activity-list">
+                        <!-- Add your recent activity items here -->
+                        <div class="activity-item">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>New order received</span>
+                            <small>2 minutes ago</small>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-star"></i>
+                            <span>New product review</span>
+                            <small>1 hour ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+</body>
+</html> 

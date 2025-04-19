@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard - Xendora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/seller_dashboard.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ url_for('static', filename='images/xendora_logo.jpg') }}" alt="XENDORA" class="logo">
+                <button class="toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#overview" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#products" class="nav-item">
+                    <i class="fas fa-box"></i>
+                    <span>Products</span>
+                </a>
+                <a href="#orders" class="nav-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </a>
+                <a href="#messages" class="nav-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Messages</span>
+                    <span class="badge">3</span>
+                </a>
+                <a href="#settings" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="/logout" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <nav class="top-nav">
+                <div class="theme-toggle">
+                    <button id="themeToggle" class="theme-toggle-btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="search" placeholder="Search...">
+                </div>
+                
+                <div class="nav-actions">
+                    <div class="notifications">
+                        <button class="notification-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge">5</span>
+                        </button>
+                        <div class="notification-dropdown">
+                            <div class="notification-header">
+                                <h3>Notifications</h3>
+                                <button class="mark-all-read">Mark all as read</button>
+                            </div>
+                            <div class="notification-list">
+                                <div class="notification-item unread">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <div class="notification-content">
+                                        <p>New order received</p>
+                                        <span>5 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <div class="notification-content">
+                                        <p>Low stock alert: Camera Lens X100</p>
+                                        <span>1 hour ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-menu">
+                        <button class="profile-btn">
+                            <img src="{{ url_for('static', filename='uploads/' + seller.profile_image) if seller.profile_image else url_for('static', filename='images/default-profile.png') }}" 
+                                 alt="Profile">
+                            <span>{{ seller.first_name }}</span>
+                        </button>
+                        <div class="profile-dropdown">
+                            <a href="/profile">
+                                <i class="fas fa-user"></i>
+                                Profile
+                            </a>
+                            <a href="/settings">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </a>
+                            <a href="/logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Welcome Section -->
+                <section class="welcome-section">
+                    <div class="welcome-text">
+                        <h1>Welcome back, {{ seller.first_name }}!</h1>
+                        <p>Here's your business overview for today</p>
+                    </div>
+                    <button class="add-product-btn">
+                        <i class="fas fa-plus"></i>
+                        Add New Product
+                    </button>
+                </section>
+
+                <!-- Stats Overview -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon sales-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Total Sales</h3>
+                            <p class="stat-value">��{{ "%.2f"|format(total_sales|float) }}</p>
+                            <div class="stat-details">
+                                <span class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i> 15%
+                                </span>
+                                <span class="stat-period">vs last month</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Orders</h3>
+                            <p class="stat-value">{{ total_orders }}</p>
+                            <span class="stat-change positive">+8% from last month</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Products</h3>
+                            <p class="stat-value">{{ total_products }}</p>
+                            <span class="stat-change neutral">No change</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Rating</h3>
+                            <p class="stat-value">4.8</p>
+                            <span class="stat-change positive">+0.2 from last month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <section class="quick-actions">
+                    <div class="action-grid">
+                        <div class="action-card">
+                            <i class="fas fa-plus-circle"></i>
+                            <h4>Add Product</h4>
+                        </div>
+                        <div class="action-card">
+                            <i class="fas fa-tags"></i>
+                            <h4>Manage Promotions</h4>
+                        </div>
+                        <div class="action-card">
+                            <i class="fas fa-box"></i>
+                            <h4>Inventory</h4>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sales Chart -->
+                <section class="chart-section">
+                    <div class="chart-header">
+                        <h2>Sales Overview</h2>
+                        <div class="chart-controls">
+                            <button class="active">Daily</button>
+                            <button>Weekly</button>
+                            <button>Monthly</button>
+                        </div>
+                    </div>
+                    <canvas id="salesChart"></canvas>
+                </section>
+
+                <!-- Recent Orders -->
+                <section class="orders-section">
+                    <div class="section-header">
+                        <h2>Recent Orders</h2>
+                        <a href="/orders" class="view-all">View All</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Product</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in recent_orders %}
+                                <tr>
+                                    <td>#{{ order.id }}</td>
+                                    <td>{{ order.product_name }}</td>
+                                    <td>{{ order.customer_name }}</td>
+                                    <td>{{ order.order_date.strftime('%B %d, %Y') }}</td>
+                                    <td>₱{{ "%.2f"|format(order.total_amount|float) }}</td>
+                                    <td>
+                                        <span class="status-badge {{ order.status.lower() }}">
+                                            {{ order.status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="update-status-btn" data-order-id="{{ order.id }}">
+                                                Update Status
+                                            </button>
+                                            <button class="view-details-btn" data-order-id="{{ order.id }}">
+                                                View Details
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Products Section -->
+                <section class="products-section">
+                    <div class="section-header">
+                        <h2>Your Products</h2>
+                        <button class="add-product-btn">Add New Product</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="products-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Status</th>
+                                    <th>Sales</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td class="product-cell">
+                                        <img src="{{ url_for('static', filename='uploads/' + product.image) }}" 
+                                             alt="{{ product.name }}">
+                                        <span>{{ product.name }}</span>
+                                    </td>
+                                    <td>₱{{ "%.2f"|format(product.price|float) }}</td>
+                                    <td>{{ product.stock }}</td>
+                                    <td>
+                                        <span class="status-badge {{ 'active' if product.is_active else 'inactive' }}">
+                                            {{ 'Active' if product.is_active else 'Inactive' }}
+                                        </span>
+                                    </td>
+                                    <td>{{ product.total_sales }}</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="edit-btn" data-product-id="{{ product.id }}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="delete-btn" data-product-id="{{ product.id }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal" id="addProductModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Product</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form class="product-form" id="addProductForm">
+                <div class="form-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" name="description" required></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productPrice">Price</label>
+                        <input type="number" id="productPrice" name="price" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productStock">Stock</label>
+                        <input type="number" id="productStock" name="stock" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productCategory">Category</label>
+                    <select id="productCategory" name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Cameras">Cameras</option>
+                        <option value="Camera Lenses">Camera Lenses</option>
+                        <option value="Audio Equipment">Audio Equipment</option>
+                        <option value="Lighting & Studio">Lighting & Studio</option>
+                        <option value="Accessories">Accessories</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productImage">Product Image</label>
+                    <div class="drag-drop-zone" id="dragDropZone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & drop your image here or click to browse</p>
+                        <input type="file" id="productImage" name="image" accept="image/*" hidden>
+                    </div>
+                    <div class="image-preview"></div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn">Cancel</button>
+                    <button type="submit" class="submit-btn">Add Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <template id="skeletonLoader">
+        <div class="skeleton-card">
+            <div class="skeleton-header"></div>
+            <div class="skeleton-body">
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line"></div>
+            </div>
+        </div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/seller_dashboard.js') }}"></script>
+</body>
+</html> 

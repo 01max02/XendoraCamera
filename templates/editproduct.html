@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Edit Product</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Edit product" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editproduct.css') }}" />
+    <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+  </head>
+  <body>
+    <div class="add-new-product">
+      <div class="rowsidebarlogo">
+        <aside class="sidebar">
+          <ul class="columndashboaar">
+            <li>
+              <a href="{{ url_for('seller_dash') }}">
+                <img src="/static/public/images/img_dashboaard.svg" alt="Dashboard" class="dashboaard_one" />
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              
+            </li>
+          </ul>
+        </aside>
+
+        <div class="newscreenbody">
+          <header class="header">
+            <div class="rowsearch_one">
+              <a href="#">
+                <img src="/static/public/images/img_notifications.svg" alt="Notifications" class="arrowdown_one" />
+              </a>
+              <div class="profile-dropdown">
+                <button class="dropdown-btn">Profile</button>
+                <div class="dropdown-content">
+                  <a href="/profile">Profile</a>
+                  <a href="#" onclick="confirmLogout()">Logout</a>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <form action="{{ url_for('edit_product', product_id=product['id']) }}" method="POST" enctype="multipart/form-data">
+            <div class="column_four">
+              <div class="column_three">
+                <div class="rowproductname">
+                  <div class="column_one">
+                    <div class="columnproductna">
+                      <h5 class="ui heading size-headings">Product Name</h5>
+                      <input type="text" name="product_name" value="{{ product['name'] }}" class="inputinitial" required />
+                    </div>
+                    <div class="columnproductna">
+                      <h6 class="ui heading size-headings">Description</h6>
+                      <input type="text" name="description" value="{{ product['description'] }}" class="inputinitial" required />
+                    </div>
+                    <div class="columnproductna">
+                      <h5 class="ui heading size-headings">Category</h5>
+                      <select name="category" class="inputinitial" id="mainCategory" onchange="updateSubcategories()" required>
+                        <option value="DSLR CAMERAS" {% if product['category'] == 'DSLR CAMERAS' %}selected{% endif %}>DSLR CAMERAS</option>
+                        <option value="MIRRORLESS CAMERAS" {% if product['category'] == 'MIRRORLESS CAMERAS' %}selected{% endif %}>MIRRORLESS CAMERAS</option>
+                        <option value="POINT & SHOOT CAMERAS" {% if product['category'] == 'POINT & SHOOT CAMERAS' %}selected{% endif %}>POINT & SHOOT CAMERAS</option>
+                        <option value="ACTION CAMERAS" {% if product['category'] == 'ACTION CAMERAS' %}selected{% endif %}>ACTION CAMERAS</option>
+                        <option value="CAMERA LENSES" {% if product['category'] == 'CAMERA LENSES' %}selected{% endif %}>CAMERA LENSES</option>
+                        <option value="CAMERA ACCESSORIES" {% if product['category'] == 'CAMERA ACCESSORIES' %}selected{% endif %}>CAMERA ACCESSORIES</option>
+                        <option value="LIGHTING & STUDIO" {% if product['category'] == 'LIGHTING & STUDIO' %}selected{% endif %}>LIGHTING & STUDIO</option>
+                        <option value="TRIPODS & SUPPORTS" {% if product['category'] == 'TRIPODS & SUPPORTS' %}selected{% endif %}>TRIPODS & SUPPORTS</option>
+                        <option value="CAMERA BAGS" {% if product['category'] == 'CAMERA BAGS' %}selected{% endif %}>CAMERA BAGS</option>
+                        <option value="MEMORY CARDS" {% if product['category'] == 'MEMORY CARDS' %}selected{% endif %}>MEMORY CARDS</option>
+                      </select>
+                    </div>
+                    <div class="columnproductna">
+                      <h5 class="ui heading size-headings">Subcategory</h5>
+                      <select name="subcategory" class="inputinitial" id="subcategory" required>
+                        <option value="{{ product['subcategory'] }}" selected>{{ product['subcategory'] }}</option>
+                      </select>
+                    </div>
+                    <div class="column">
+                      <div class="rowsku">
+                        <div class="columnsku">
+                          <h5 class="ui heading size-headings">Stock Quantity</h5>
+                          <input type="number" name="stock_quantity" value="{{ product['quantity'] }}" class="inputinitial" required />
+                        </div>
+                      </div>
+                      <div class="rowsku">
+                        <div class="columnsku">
+                          <h5 class="ui heading size-headings">Price (PHP)</h5>
+                          <input type="number" name="regular_price" value="{{ product['price'] }}" class="inputinitial" required />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="columnview">
+                    <div class="columnproductna">
+                      <h5 class="ui heading size-headings">Product Images</h5>
+                      <div class="image-upload-container">
+                        <input type="file" name="product_image" id="product_image" class="file-input" accept="image/*">
+                        <label for="product_image" class="upload-label">
+                          <i class="fas fa-cloud-upload-alt"></i>
+                          <span>Choose a file</span>
+                        </label>
+                        <div id="image-preview" class="image-preview">
+                          {% if product['image'] %}
+                            <img src="{{ product['image'] }}" alt="Current Product Image" class="preview-image">
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="columnproductna">
+                      <h5 class="ui heading size-headings">Product ID</h5>
+                      <input type="text" name="prod_id" value="{{ product['id'] }}" class="inputinitial" readonly />
+                    </div>
+
+                <div class="rowdelete">
+                  <button type="submit" class="flex-row-center-center delete">Update Product</button>
+                  <a href="{{ url_for('Allproducts') }}" class="flex-row-center-center cancel">Cancel</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Include the updateSubcategories function from AddNewProduct.html
+      function updateSubcategories() {
+        // ... (same subcategories function as in AddNewProduct.html) ...
+      }
+
+      // Preview uploaded image
+      document.getElementById('product_image').addEventListener('change', function(e) {
+        const preview = document.getElementById('image-preview');
+        preview.innerHTML = ''; // Clear existing preview
+        
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'preview-image';
+            preview.appendChild(img);
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OTP Verification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/otp_verification.css') }}">
+</head>
+<body>
+    <div class="otp-container">
+        <div class="otp-box">
+            <div class="otp-title">OTP Verification</div>
+            <p class="otp-description">Please enter the verification code sent to your email</p>
+            
+            <form id="otpForm">
+                <div class="otp-input-group">
+                    <input type="text" class="otp-input" maxlength="1" required>
+                    <input type="text" class="otp-input" maxlength="1" required>
+                    <input type="text" class="otp-input" maxlength="1" required>
+                    <input type="text" class="otp-input" maxlength="1" required>
+                    <input type="text" class="otp-input" maxlength="1" required>
+                    <input type="text" class="otp-input" maxlength="1" required>
+                </div>
+                <button type="submit" class="verify-btn">Verify OTP</button>
+            </form>
+            
+            <div class="resend-code">
+                <button type="button" id="resendBtn">Resend Code</button>
+                <div class="timer" id="timer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add error/success message containers -->
+    <div class="error-message" style="display: none;"></div>
+    <div class="success-message" style="display: none;"></div>
+
+    <!-- Load JavaScript at the end of body -->
+    <script src="{{ url_for('static', filename='js/otp_verification.js') }}"></script>
+</body>
+</html>

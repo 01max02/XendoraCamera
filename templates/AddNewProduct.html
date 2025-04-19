@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Add New Product</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Add a new product" />
+
+    <!-- Link to local CSS files -->
+    <link rel="stylesheet" type="text/css" href="static/css/add_product.css" />
+    <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+
+    <script>
+        // Function to show a popup alert if the item was added successfully
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorMessage = "{{ error }}";
+            if (errorMessage) {
+                document.getElementById("productExistsModal").style.display = "block";
+            }
+        };
+
+        // Function to confirm adding the product
+        function confirmAddProduct(event) {
+            event.preventDefault(); // Prevent form submission
+            const confirmation = confirm("Are you sure you want to add this item?");
+            if (confirmation) {
+                // If the user confirmed, submit the form
+                event.target.closest("form").submit();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="add-new-product">
+        <div class="rowsidebarlogo">
+            <aside class="sidebar">
+                <ul class="columndashboaar">
+                    <li>
+                        <a href="{{ url_for('seller_dash') }}">
+                            <img src="/static/public/images/img_dashboaard.svg" alt="Dashboard" class="dashboaard_one" />
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('Allproducts') }}">
+                            <img src="/static/public/images/img_albums.svg" alt="Albums" class="dashboaard_one" />
+                            <span>All Products</span>
+                        </a>
+                    </li>
+                    {% if session.get('user_type') == 'Seller' %}
+                        <li>
+                            <a href="{{ url_for('add_new_product') }}" class="add-products">
+                                <img src="/static/public/images/img_plus.svg" alt="Add Product" class="dashboaard_one" />
+                                <span>Add Products</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <a href="{{ url_for('OrdersList') }}">
+                            <img src="/static/public/images/img_document_text.svg" alt="Order List" class="dashboaard_one" />
+                            <span>Order list</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <div class="newscreenbody">
+                <header class="header">
+                    <div class="rowsearch_one">
+                        <a href="#">
+                            <img src="/static/public/images/img_notifications.svg" alt="Notifications" class="arrowdown_one" />
+                        </a>
+                        <div class="profile-dropdown">
+                            <button class="dropdown-btn">Profile</button>
+                            <div class="dropdown-content">
+                                <a href="/profile">Profile</a>
+                                <a href="#" onclick="confirmLogout()">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <form action="/add_new_product" method="POST" enctype="multipart/form-data">
+                    <div class="column_four">
+                        <div class="column_three">
+                            <div class="rowproductname">
+                                <div class="column_one">
+                                    <div class="columnproductna">
+                                        <h5 class="ui heading size-headings">Product Name</h5>
+                                        <input type="text" name="product_name" placeholder="Enter product name" class="inputinitial" required />
+                                    </div>
+                                    <div class="columnproductna">
+                                        <h6 class="ui heading size-headings">Description</h6>
+                                        <input type="text" name="description" placeholder="Enter product description" class="inputinitial" required />
+                                    </div>
+                                    <div class="columnproductna">
+                                        <h5 class="ui heading size-headings">Category</h5>
+                                        <select name="category" class="inputinitial" id="mainCategory" onchange="updateSubcategories()" required>
+                                            <option value="">Select Main Category</option>
+                                            <option value="CAMERAS & LENSES">CAMERAS & LENSES</option>
+                                            <option value="AUDIO EQUIPMENT">AUDIO EQUIPMENT</option>
+                                            <option value="LIGHTING & STUDIO">LIGHTING & STUDIO</option>
+                                            <option value="ACCESSORIES">ACCESSORIES</option>
+                                        </select>
+                                    </div>
+                                    <div class="columnproductna">
+                                        <h5 class="ui heading size-headings">Subcategory</h5>
+                                        <select name="subcategory" class="inputinitial" id="subcategory" required>
+                                            <option value="">Select Main Category First</option>
+                                        </select>
+                                    </div>
+                                    <div class="column">
+                                        <div class="rowsku">
+                                            <div class="columnsku">
+                                                <h5 class="ui heading size-headings">Stock Quantity</h5>
+                                                <input type="number" name="stock_quantity" placeholder="Enter stock quantity" class="inputinitial" required />
+                                            </div>
+                                        </div>
+                                        <div class="rowsku">
+                                            <div class="columnsku">
+                                                <h5 class="ui heading size-headings">Price (PHP)</h5>
+                                                <input type="number" name="regular_price" placeholder="Enter regular price" class="inputinitial" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                
+                                <div class="columnview">
+                                    <div class="rowview">
+                                        <div class="view"></div>
+                                    </div>
+                                    <div class="columnproductna">
+                                        <h5 class="ui heading size-headings">Product ID</h5>
+                                        <input type="text" name="prod_id" placeholder="Enter product ID" class="inputinitial" required />
+                                    </div>
+                
+                            <div class="rowdelete">
+                                <button type="submit" class="flex-row-center-center delete" onclick="confirmAddProduct(event)">Confirm</button>
+                                <button type="button" class="flex-row-center-center cancel" onclick="window.location.href='/seller_dash'">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <script>
+                    function updateSubcategories() {
+                        const mainCategory = document.getElementById('mainCategory').value;
+                        const subcategorySelect = document.getElementById('subcategory');
+                        
+                        // Clear existing options
+                        subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+                        
+                        // Define subcategories for each main category
+                        const subcategories = {
+                            'CAMERAS & LENSES': [
+                                'DSLR CAMERAS',
+                                'MIRRORLESS CAMERAS',
+                                'POINT & SHOOT CAMERAS',
+                                'ACTION CAMERAS',
+                                'CAMERA LENSES',
+                                'LENS FILTERS',
+                                'LENS ADAPTERS',
+                                'LENS CAPS'
+                            ],
+                            'AUDIO EQUIPMENT': [
+                                'CAMERA MICROPHONES',
+                                'WIRELESS MICROPHONES',
+                                'AUDIO RECORDERS',
+                                'AUDIO MIXERS',
+                                'HEADPHONES',
+                                'AUDIO CABLES',
+                                'WINDSCREENS',
+                                'MICROPHONE STANDS'
+                            ],
+                            'LIGHTING & STUDIO': [
+                                'STUDIO FLASH LIGHTS',
+                                'LED LIGHTS',
+                                'RING LIGHTS',
+                                'LIGHT STANDS',
+                                'SOFTBOXES',
+                                'BACKGROUNDS',
+                                'STUDIO KITS',
+                                'LIGHT METERS'
+                            ],
+                            'ACCESSORIES': [
+                                'CAMERA BAGS',
+                                'TRIPODS',
+                                'MEMORY CARDS',
+                                'CAMERA BATTERIES',
+                                'CAMERA STRAPS',
+                                'CLEANING KITS',
+                                'CARD READERS',
+                                'CAMERA REMOTES'
+                            ]
+                        };
+                        
+                        // Add subcategories based on main category selection
+                        if (subcategories[mainCategory]) {
+                            subcategories[mainCategory].forEach(sub => {
+                                const option = document.createElement('option');
+                                option.value = sub;
+                                option.textContent = sub;
+                                subcategorySelect.appendChild(option);
+                            });
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Product Already Exists -->
+    <div id="productExistsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Product Already Exists</h2>
+            <p>This product already exists, edit the product for changes.</p>
+            <div class="modal-buttons">
+                <button onclick="document.getElementById('productExistsModal').style.display = 'none';">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal CSS -->
+    <style>
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+            padding-top: 60px;
+            animation: fadeIn 0.5s ease-out; /* Add animation */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            animation: slideUp 0.5s ease-out; /* Add animation */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Modal Button Styles */
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            padding: 10px 15px;
+            background-color: #B0878F;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modal-buttons button:hover {
+            background-color: #A07580;
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <!-- JavaScript for Modal -->
+    <script>
+        // Close the modal when the user clicks the "X"
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+            document.getElementById("productExistsModal").style.display = "none";
+        }
+
+        // Close the modal if the user clicks anywhere outside of the modal
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("productExistsModal")) {
+                document.getElementById("productExistsModal").style.display = "none";
+            }
+        }
+    </script>
+
+    <div class="columnproductna">
+        <h5 class="ui heading size-headings">Product Images</h5>
+        <div class="image-upload-container">
+            <input type="file" name="product_image" id="product_image" class="file-input" accept="image/*" required>
+            <label for="product_image" class="upload-label">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Choose a file</span>
+            </label>
+            <div id="image-preview" class="image-preview"></div>
+        </div>
+    </div>
+
+    <script>
+    // Preview uploaded image
+    document.getElementById('product_image').addEventListener('change', function(e) {
+        const preview = document.getElementById('image-preview');
+        preview.innerHTML = ''; // Clear existing preview
+        
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'preview-image';
+                preview.appendChild(img);
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+    </script>
+
+    <style>
+    .image-upload-container {
+        text-align: center;
+        padding: 20px;
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .file-input {
+        display: none;
+    }
+
+    .upload-label {
+        cursor: pointer;
+        padding: 10px 20px;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .upload-label:hover {
+        background-color: #e9ecef;
+    }
+
+    .image-preview {
+        margin-top: 20px;
+    }
+
+    .preview-image {
+        max-width: 200px;
+        max-height: 200px;
+        margin: 10px;
+        border-radius: 5px;
+    }
+    </style>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+</head>
+<body>
+    <div class="checkout-container">
+        <div class="order-success">
+            <h2>Order Placed Successfully!</h2>
+            <p>Order ID: #{{ order_id }}</p>
+            
+            <div class="order-status">
+                <h3>Order Status</h3>
+                <p class="pending-message">Your Order is Pending. Wait For Seller Confirmation</p>
+            </div>
+            
+            <div class="order-details">
+                <h3>Order Items</h3>
+                {% for item in order_items %}
+                <div class="item">
+                    <div class="item-info">
+                        <img src="{{ url_for('static', filename='uploads/' + item.image) }}" 
+                             alt="{{ item.product_name }}"
+                             onerror="this.src='{{ url_for('static', filename='images/products/no-image.png') }}'">
+                        <span>{{ item.product_name }}</span>
+                    </div>
+                    <div class="item-price">₱{{ "%.2f"|format(item.price) }}</div>
+                    <div class="item-quantity">x{{ item.quantity }}</div>
+                    <div class="item-total">₱{{ "%.2f"|format(item.price * item.quantity) }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="action-buttons">
+                <a href="{{ url_for('homepage') }}" class="back-btn">Continue Shopping</a>
+                <a href="{{ url_for('orders') }}" class="checkout-btn">View Orders</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

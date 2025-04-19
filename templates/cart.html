@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2><i class="bi bi-person-circle"></i> User Menu</h2>
+            <ul>
+                <li>
+                    <a href="/profile">
+                        <i class="bi bi-person"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/cart" class="active">
+                        <i class="bi bi-cart3"></i>
+                        <span>My Cart</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/orders">
+                        <i class="bi bi-box-seam"></i>
+                        <span>My Orders</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/homepage">
+                        <i class="bi bi-house"></i>
+                        <span>Return to Homepage</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/change-password">
+                        <i class="bi bi-key"></i>
+                        <span>Change Password</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="container">
+                <!-- Cart Items Section -->
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="cart-container">
+                            <div class="cart-header row d-none d-md-flex">
+                                <div class="col-6">Product</div>
+                                <div class="col-2 text-start">Price</div>
+                                <div class="col-2 text-start">Quantity</div>
+                                <div class="col-2 text-start">Total</div>
+                            </div>
+                            <div id="cartItems">
+                                <form action="{{ url_for('checkout') }}" method="POST">
+                                    {% for item in cart_items %}
+                                    <div class="cart-item row">
+                                        <div class="col-1">
+                                            <input type="checkbox" name="cart_items" value="{{ item.id }}" class="form-check-input">
+                                        </div>
+                                        <div class="col-5">
+                                            {% if item.product_image %}
+                                                <img src="{{ url_for('static', filename='uploads/' + item.product_image) }}" 
+                                                     alt="{{ item.product_name }}" 
+                                                     class="img-thumbnail" 
+                                                     style="width: 100px; height: 100px; object-fit: cover;">
+                                            {% else %}
+                                                <img src="{{ url_for('static', filename='images/products/no-image.png') }}" 
+                                                     alt="No Image" 
+                                                     class="img-thumbnail" 
+                                                     style="width: 100px; height: 100px; object-fit: cover;">
+                                            {% endif %}
+                                            <span class="ms-3">{{ item.product_name }}</span>
+                                        </div>
+                                        <div class="col-2">₱{{ "%.2f"|format(item.price) }}</div>
+                                        <div class="col-2">{{ item.quantity }}</div>
+                                        <div class="col-2">₱{{ "%.2f"|format(item.total) }}</div>
+                                    </div>
+                                    {% endfor %}
+                                    
+                                    <div class="cart-summary">
+                                        <h3 class="h5 mb-4">Cart Total</h3>
+                                        <div class="summary-row">
+                                            <span>SUBTOTAL</span>
+                                            <span id="subtotal">₱{{ "%.2f"|format(subtotal) }}</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span>SHIPPING FEE</span>
+                                            <span class="text-success" style="font-size: 14px;">FREE</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span>DISCOUNT (-25%)</span>
+                                            <span id="discount" style="color: #dc3545;">-₱{{ "%.2f"|format(discount) }}</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span class="fw-bold">TOTAL</span>
+                                            <span class="fw-bold" id="total">₱{{ "%.2f"|format(final_total) }}</span>
+                                        </div>
+                                        <button type="submit" class="checkout-btn">Proceed To Checkout</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cart Summary Section -->
+                    <div class="col-lg-4">
+                        <div class="cart-summary">
+                            <h3 class="h5 mb-4">Cart Total</h3>
+                            <div class="summary-row">
+                                <span>SUBTOTAL</span>
+                                <span id="subtotal">₱{{ "%.2f"|format(subtotal) }}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>SHIPPING FEE</span>
+                                <span class="text-success" style="font-size: 14px;">FREE</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>DISCOUNT (-25%)</span>
+                                <span id="discount" style="color: #dc3545;">-₱{{ "%.2f"|format(discount) }}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="fw-bold">TOTAL</span>
+                                <span class="fw-bold" id="total">₱{{ "%.2f"|format(final_total) }}</span>
+                            </div>
+                            <form action="{{ url_for('checkout') }}" method="POST">
+                                <button type="submit" class="checkout-btn">Proceed To Checkout</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories Section -->
+                <div class="categories-section">
+                    <div class="section-header">
+                        <h2 class="h4">Explore More Categories</h2>
+                    </div>
+                    <div class="row g-4">
+                        <!-- Camera Lenses -->
+                        <div class="col-6 col-md-3">
+                            <div class="category-card">
+                                <a href="/cameralenses">
+                                    <div class="card-image">
+                                        <img src="{{ url_for('static', filename='images/camera.jpg') }}" alt="Camera Lenses">
+                                    </div>
+                                    <div class="card-content">
+                                        <h3>Camera Lenses</h3>
+                                        <p>Professional lenses for every shot</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Audio Equipment -->
+                        <div class="col-6 col-md-3">
+                            <div class="category-card">
+                                <a href="/audio_equipment">
+                                    <div class="card-image">
+                                        <img src="{{ url_for('static', filename='images/Mixer.jpg') }}" alt="Audio Equipment">
+                                    </div>
+                                    <div class="card-content">
+                                        <h3>Audio Equipment</h3>
+                                        <p>Professional audio solutions</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Lighting Studio -->
+                        <div class="col-6 col-md-3">
+                            <div class="category-card">
+                                <a href="/lighting_studio">
+                                    <div class="card-image">
+                                        <img src="{{ url_for('static', filename='images/lightningandstudio.jpg') }}" alt="Lighting Studio">
+                                    </div>
+                                    <div class="card-content">
+                                        <h3>Lighting & Studio</h3>
+                                        <p>Professional lighting equipment</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Camera Accessories -->
+                        <div class="col-6 col-md-3">
+                            <div class="category-card">
+                                <a href="/accessories">
+                                    <div class="card-image">
+                                        <img src="{{ url_for('static', filename='images/cameraaccessories.jpg') }}" alt="Camera Accessories">
+                                    </div>
+                                    <div class="card-content">
+                                        <h3>Camera Accessories</h3>
+                                        <p>Essential camera gear</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- See More Button -->
+                    <div class="text-center mt-4">
+                        <a href="/product_categories" class="see-more-btn">
+                            See More Categories
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+</body>
+</html>

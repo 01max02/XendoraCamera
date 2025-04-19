@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Xendora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/message.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/xendora_logo.jpg') }}" alt="Xendora" class="logo-img">
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="/seller_dash" class="nav-link">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Allproducts" class="nav-link">
+                            <i class="fas fa-box"></i>
+                            <span>Products</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/orders" class="nav-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/messages" class="nav-link active">
+                            <i class="fas fa-envelope"></i>
+                            <span>Messages</span>
+                            <span class="badge">3</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/profile" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="messages-container">
+                <!-- Messages List -->
+                <div class="messages-list">
+                    <div class="messages-header">
+                        <h2>Messages</h2>
+                        <div class="search-box">
+                            <input type="text" placeholder="Search messages...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="message-items">
+                        <!-- Message items will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Message Content -->
+                <div class="message-content">
+                    <div class="chat-header">
+                        <div class="chat-user-info">
+                            <img src="{{ url_for('static', filename='images/default-avatar.png') }}" alt="User Avatar" class="avatar">
+                            <div class="user-details">
+                                <h3>John Doe</h3>
+                                <span class="status online">Online</span>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="btn-action"><i class="fas fa-phone"></i></button>
+                            <button class="btn-action"><i class="fas fa-video"></i></button>
+                            <button class="btn-action"><i class="fas fa-ellipsis-v"></i></button>
+                        </div>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Chat messages will be dynamically added here -->
+                    </div>
+                    <div class="chat-input">
+                        <button class="btn-attachment"><i class="fas fa-paperclip"></i></button>
+                        <input type="text" placeholder="Type a message..." id="message-input">
+                        <button class="btn-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout confirmation modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to logout?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="/logout" class="btn btn-primary">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/message.js') }}"></script>
+</body>
+</html> 

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="menu-buttons">
+            <button onclick="location.href='/admins'" class="active">
+                <i class="fas fa-chart-line"></i>
+                Dashboard
+            </button>
+            <button onclick="location.href='/admin'">
+                <i class="fas fa-users"></i>
+                User Accounts
+            </button>
+            <button onclick="location.href='/pending_sellers'">
+                <i class="fas fa-user-clock"></i>
+                Pending Accounts
+            </button>
+            <button onclick="location.href='/archive_accounts'">
+                <i class="fas fa-archive"></i>
+                Archived Accounts
+            </button>
+        </div>
+        <form action="/logout" method="get" class="logout-form">
+            <button type="submit" class="logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
+    </nav>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard-container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1>Welcome, Admin!</h1>
+            <p class="date-time" id="currentDateTime">Loading...</p>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="stat-card">
+                <i class="fas fa-shopping-cart"></i>
+                <div class="stat-info">
+                    <h3>Total Sales</h3>
+                    <p class="value">₱{{ platform_sales | round(2) }}</p>
+                    <span class="trend positive">+15% <i class="fas fa-arrow-up"></i></span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-info">
+                    <h3>Total Users</h3>
+                    <p class="value" id="totalUsers">0</p>
+                    <span class="trend positive">+8% <i class="fas fa-arrow-up"></i></span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-store"></i>
+                <div class="stat-info">
+                    <h3>Active Sellers</h3>
+                    <p class="value" id="activeSellers">0</p>
+                    <span class="trend positive">+12% <i class="fas fa-arrow-up"></i></span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="stat-info">
+                    <h3>Pending Approvals</h3>
+                    <p class="value" id="pendingApprovals">0</p>
+                    <span class="trend neutral">No change <i class="fas fa-minus"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h2>User Growth</h2>
+                <canvas id="userChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h2>Sales Analytics</h2>
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <i class="fas fa-user-plus"></i>
+                    <div class="activity-info">
+                        <p>New seller registration</p>
+                        <span>2 minutes ago</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <i class="fas fa-shopping-bag"></i>
+                    <div class="activity-info">
+                        <p>New order placed</p>
+                        <span>15 minutes ago</span>
+                    </div>
+                </div>
+                <!-- Add more activity items as needed -->
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="system-status">
+            <h2>System Status</h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <i class="fas fa-server"></i>
+                    <div class="status-info">
+                        <h3>Server Status</h3>
+                        <span class="status-badge online">Online</span>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-database"></i>
+                    <div class="status-info">
+                        <h3>Database</h3>
+                        <span class="status-badge online">Connected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>All Products</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="All Products Dashboard" />
+    <link rel="stylesheet" type="text/css" href="static/css/Allproducts.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/seller_dash.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
+  </head>
+  <body>
+    <div class="all-products">
+      <div class="rowdashboaard">
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Xendora" class="logo">
+          </div>
+
+          <nav class="sidebar-nav">
+            <a href="{{ url_for('seller_dash') }}" class="nav-item">
+              <i class="fa-solid fa-house"></i>
+              <span>Dashboard</span>
+            </a>
+            
+            <a href="{{ url_for('Allproducts') }}" class="nav-item">
+              <i class="fa-solid fa-box"></i>
+              <span>Products</span>
+            </a>
+            
+            <a href="{{ url_for('OrdersList') }}" class="nav-item">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <span>Orders</span>
+            </a>
+            
+            <a href="#messages" class="nav-item">
+              <i class="fa-solid fa-envelope"></i>
+              <span>Messages</span>
+              <span class="badge">3</span>
+            </a>
+            
+            <a href="{{ url_for('profile') }}" class="nav-item">
+              <i class="fa-solid fa-user"></i>
+              <span>Profile</span>
+            </a>
+          </nav>
+
+          <div class="sidebar-footer">
+            <button class="theme-toggle-btn" id="themeToggle">
+              <i class="fa-solid fa-moon"></i>
+            </button>
+            <a href="#" class="logout-btn" onclick="confirmLogout()">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>Logout</span>
+            </a>
+          </div>
+        </aside>
+
+        <div class="newscreenbody">
+          <header class="header">
+            <div class="rowsearch_one">
+              <a href="#">
+                <img src="/static/public/images/img_notifications.svg" alt="Notifications" class="arrowdown_one" />
+              </a>
+              <div class="profile-dropdown">
+                <button class="dropdown-btn">Profile</button>
+                <div class="dropdown-content">
+                  <a href="/profile">Profile</a>
+                  <a href="#" onclick="confirmLogout()">Logout</a>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <!-- Centered Search and Filter Section -->
+          <div class="filter-sort">
+            <form action="{{ url_for('Allproducts') }}" method="GET" class="sort-category-form">
+              <select name="sales_sort" class="sales_sort_dropdown" onchange="this.form.submit()">
+                <option value="">Sort by Sales</option>
+                <option value="highest" {% if sales_sort == 'highest' %}selected{% endif %}>Highest Sales</option>
+                <option value="lowest" {% if sales_sort == 'lowest' %}selected{% endif %}>Lowest Sales</option>
+              </select>
+
+              <select name="category" class="category_dropdown" onchange="this.form.submit()">
+                <option value="">All Categories</option>
+                <option value="CAMERAS & LENSES" {% if category == 'CAMERAS & LENSES' %}selected{% endif %}>CAMERAS & LENSES</option>
+                <option value="AUDIO EQUIPMENT" {% if category == 'AUDIO EQUIPMENT' %}selected{% endif %}>AUDIO EQUIPMENT</option>
+                <option value="LIGHTING & STUDIO" {% if category == 'LIGHTING & STUDIO' %}selected{% endif %}>LIGHTING & STUDIO</option>
+                <option value="ACCESSORIES" {% if category == 'ACCESSORIES' %}selected{% endif %}>ACCESSORIES</option>
+              </select>
+
+              <div class="search-container">
+                <input type="text" name="search" placeholder="Search products..." 
+                       class="search_input" value="{{ request.args.get('search', '') }}">
+                <button type="submit" class="search_button">
+                  <img src="/static/public/images/img_search.svg" alt="Search" class="search_one" />
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Products Grid -->
+          <div class="all_products">
+            {% for product in products %}
+              <div class="columnlorem">
+                <div class="rowlorem_ipsum">
+                  {% if product.image %}
+                    <img src="{{ url_for('static', filename='uploads/products/' + product.image) }}" 
+                         alt="{{ product.name }}" 
+                         class="product-image"
+                    <img src="{{ url_for('static', filename='images/products/no-image.png') }}" 
+                         alt="{{ product.name }}" 
+                         class="product-image">
+                  {% endif %}
+                  <div class="columnadidasult">
+                    <h3 class="summary">{{ product.name }}</h3>
+                    <span class="category">{{ product.category }}</span>
+                    <div class="price">₱{{ product.price }}.00</div>
+                  </div>
+                </div>
+                
+                <div class="columnsales">
+                  <div class="rowsales">
+                    <p class="sales">Item Sales</p>
+                    <span>{{ product.received_orders }}</span>
+                  </div>
+                  <div class="rowsales">
+                    <p class="sales">Quantity</p>
+                    <span>{{ product.quantity }}</span>
+                  </div>
+                </div>
+
+                <div class="product-description">
+                  <p>{{ product.description }}</p>
+                </div>
+
+                <div class="edit-button">
+                  <a href="{{ url_for('edit_product', product_id=product.id) }}">
+                    <button>Edit</button>
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

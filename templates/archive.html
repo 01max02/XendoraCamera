@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archived Accounts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/archive.css') }}">
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-links">
+            <a href="/admins">
+                <i class="fas fa-chart-line"></i>
+                Dashboard
+            </a>
+            <a href="/admin">
+                <i class="fas fa-users"></i>
+                User Accounts
+            </a>
+            <a href="/pending_sellers">
+                <i class="fas fa-user-clock"></i>
+                Pending Accounts
+            </a>
+            <a href="/archive_accounts" class="active">
+                <i class="fas fa-archive"></i>
+                Archived Accounts
+            </a>
+        </div>
+        <a href="{{ url_for('logout') }}" class="logout" onclick="return confirmLogout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+        </a>
+    </nav>
+
+    <div class="dashboard">
+        <div class="welcome-section">
+            <h1>Archived Accounts</h1>
+            <p>View and manage archived user accounts</p>
+        </div>
+
+        <div class="search-section">
+            <form action="/archive_accounts" method="get" class="search-form">
+                <div class="search-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" name="search_email" placeholder="Search by email" value="{{ search_query }}">
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Address</th>
+                        <th>User Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phone_number }}</td>
+                        <td>{{ user.address }}</td>
+                        <td>{{ user.user_type }}</td>
+                        <td>
+                            <form action="/restore/{{ user.id }}" method="post" style="display:inline;" onsubmit="return confirmRestore('{{ user.id }}')">
+                                <button type="submit" class="restore">
+                                    <i class="fas fa-undo"></i>
+                                    Restore
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/archive.js') }}"></script>
+</body>
+</html>

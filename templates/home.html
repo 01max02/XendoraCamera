@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Xendora</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="landing-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1>Welcome to Xendora</h1>
+                <p>Your Premier Camera Equipment Destination</p>
+                <div class="cta-buttons">
+                    <a href="/login" class="cta-button login">Login</a>
+                    <a href="#register-section" class="cta-button register">Register</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2>Why Choose Xendora?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-camera"></i>
+                    <h3>Premium Equipment</h3>
+                    <p>Access to top-quality camera gear</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-truck"></i>
+                    <h3>Fast Delivery</h3>
+                    <p>Quick and secure shipping</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure Shopping</h3>
+                    <p>Safe and protected transactions</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>24/7 Support</h3>
+                    <p>Always here to help you</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Register Section -->
+        <section id="register-section" class="register-section">
+            <div class="register-container">
+                <h2>Create Your Account</h2>
+                <form id="registerForm" class="register-form">
+                    <div class="form-group">
+                        <input type="text" id="firstName" required>
+                        <label for="firstName">First Name</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="lastName" required>
+                        <label for="lastName">Last Name</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" required>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" required>
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="form-group">
+                        <select id="userType" required>
+                            <option value="">Select User Type</option>
+                            <option value="buyer">Buyer</option>
+                            <option value="seller">Seller</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="register-button">Register</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section">
+            <h2>What Our Users Say</h2>
+            <div class="testimonials-slider">
+                <div class="testimonial-card active">
+                    <img src="{{ url_for('static', filename='images/user1.jpg') }}" alt="User 1">
+                    <p>"Amazing selection of camera equipment. Best prices I've found!"</p>
+                    <h4>John Doe</h4>
+                    <span>Professional Photographer</span>
+                </div>
+                <!-- More testimonials -->
+            </div>
+            <div class="slider-dots"></div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+</body>
+</html>

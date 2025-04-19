@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - Product Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sproduct.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="product-details">
+            <div class="product-image">
+                <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+            </div>
+            
+            <div class="product-info">
+                <h1>{{ product.name }}</h1>
+                <p class="category">{{ product.category }} > {{ product.subcategory }}</p>
+                <p class="price">₱{{ product.price }}</p>
+                <p class="description">{{ product.description }}</p>
+                
+                <div class="stock-info">
+                    <p>Stock Available: {{ product.quantity }}</p>
+                </div>
+
+                <div class="seller-info">
+                    <p>Seller: {{ product.seller_email }}</p>
+                    <a href="{{ url_for('view_shop', seller_email=product.seller_email) }}" class="view-store-btn">
+                        View Store
+                    </a>
+                </div>
+
+                <div class="actions">
+                    <div class="quantity-selector">
+                        <button onclick="decrementQuantity()">-</button>
+                        <input type="number" id="quantity" value="1" min="1" max="{{ product.quantity }}">
+                        <button onclick="incrementQuantity()">+</button>
+                    </div>
+
+                    <button class="add-to-cart" onclick="addToCart('{{ product.id }}')">
+                        Add to Cart
+                    </button>
+                    
+                    <button class="add-to-wishlist" onclick="toggleWishlist('{{ product.id }}')">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function incrementQuantity() {
+            const input = document.getElementById('quantity');
+            const max = parseInt(input.max);
+            const currentValue = parseInt(input.value);
+            if (currentValue < max) {
+                input.value = currentValue + 1;
+            }
+        }
+
+        function decrementQuantity() {
+            const input = document.getElementById('quantity');
+            const currentValue = parseInt(input.value);
+            if (currentValue > 1) {
+                input.value = currentValue - 1;
+            }
+        }
+
+        function addToCart(productId) {
+            const quantity = document.getElementById('quantity').value;
+            fetch('/add_to_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    quantity: quantity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    // Update cart count if needed
+                    if (data.cartCount) {
+                        document.querySelector('.cart-count').textContent = data.cartCount;
+                    }
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error adding to cart');
+            });
+        }
+
+        function toggleWishlist(productId) {
+            fetch('/toggle_wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    product_id: productId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    // Toggle wishlist icon if needed
+                    const wishlistBtn = document.querySelector('.add-to-wishlist');
+                    if (data.isInWishlist) {
+                        wishlistBtn.classList.add('in-wishlist');
+                    } else {
+                        wishlistBtn.classList.remove('in-wishlist');
+                    }
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error updating wishlist');
+            });
+        }
+    </script>
+</body>
+</html> 

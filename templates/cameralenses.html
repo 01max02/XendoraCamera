@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Lenses - Xendora</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='category.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cameralenses.css') }}">
+    <script src="{{ url_for('static', filename='js/cameralenses.js') }}" defer></script>
+</head>
+<body>
+    <div class="category-header">
+        <h1>Camera Lenses</h1>
+        <p>Discover professional-grade lenses for every photography need</p>
+    </div>
+
+    <div class="filter-section">
+        <div class="filter-container">
+            <div class="filter-group">
+                <select class="filter-select" id="sortBy">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                </select>
+                <select class="filter-select" id="brandFilter">
+                    <option value="all">All Brands</option>
+                    <option value="canon">Canon</option>
+                    <option value="nikon">Nikon</option>
+                    <option value="sony">Sony</option>
+                </select>
+            </div>
+            <div class="search-group">
+                <input type="text" id="searchInput" placeholder="Search lenses...">
+            </div>
+        </div>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+        <!-- Products will be loaded here dynamically -->
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+  
+</body>
+</html> 
